@@ -9,6 +9,7 @@
 
         <!-- Define the class for Hibernate which implements JPA -->
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
         <!-- Define the object that should be persisted in the database -->
         <class>Task</class>
         <properties>
@@ -20,6 +21,8 @@
             <property name="javax.persistence.jdbc.user" value="dbadmin" />
             <!-- Password -->
             <property name="javax.persistence.jdbc.password" value="dbpassword" />
+
+            <property name="hbm2ddl.auto" value="create"/>
         </properties>
     </persistence-unit>
 </persistence>

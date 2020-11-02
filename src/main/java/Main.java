@@ -12,6 +12,9 @@ public class Main {
 //        addTask(1L, 1, "testTask1");
 //        addTask(2L, 1, "testTask2");
 //        addTask(3L, 1, "testTask3");
+//        addTask( 1, "testTask1");
+//        addTask(1, "testTask2");
+//        addTask(1, "testTask3");
 
         getTask(1L);
         getTask(2L);
@@ -19,7 +22,7 @@ public class Main {
         ENTITY_MANAGER_FACTORY.close();
     }
 
-    public static void addTask(long id, int importance, String taskName) {
+    public static void addTask(int importance, String taskName) {
         // The EntityManager class allows operations such as create, read, update, delete
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Used to issue transactions on the EntityManager
@@ -32,7 +35,7 @@ public class Main {
 
             // Create and set values for new task
             Task task = new Task();
-            task.setTaskId(id);
+//            task.setTaskId(id);
             task.setCreationDate(new Date());
             task.setImportance(importance);
             task.setTaskName(taskName);

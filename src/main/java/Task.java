@@ -1,20 +1,32 @@
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "tasks")
-public class Task {
+public class Task implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
 // Task class
 
     @Id
-    @Column(name = "taskid", nullable = false)
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "taskid", nullable = false, unique = true)
     private Long taskId;
 
+    @Column(name = "taskName", nullable = false)
+    private String taskName;
+
+    @Column(name = "taskNote", nullable = true)
+    private String note;
+
 //    @Transient
-//    private List<String> subTasks;
+    @ElementCollection
+    @Column(name = "subTasks", nullable = true)
+    private List<String> subTasks;
 
     @Column(name = "taskCreationDate", nullable = false)
     private Date creationDate;
@@ -24,12 +36,6 @@ public class Task {
 
     @Column(name = "taskImportance", nullable = false)
     private int importance;
-
-    @Column(name = "taskNote", nullable = true)
-    private String note;
-
-    @Column(name = "taskName", nullable = false)
-    private String taskName;
 
     public Task() {
     }
