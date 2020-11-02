@@ -1,50 +1,81 @@
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
+@Entity
+@Table(name = "tasks")
 public class Task {
 
 // Task class
 
-    private LocalDateTime creationDate, reminderDate;
-    private DateTimeFormatter dateTimeFormatter;
-    private int taskNumber, importance;
-    private ArrayList<Task> subTasks;
-    private String note, taskName;
+    @Id
+    @Column(name = "taskid", nullable = false)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long taskId;
 
-    public Task( int taskNumber, int importance, String taskName) {
-        this.creationDate = LocalDateTime.now();
-        this.dateTimeFormatter = DateTimeFormatter .ofPattern("dd-MM-yyyy HH:mm:ss");
-        creationDate.format(dateTimeFormatter);
-        this.taskNumber = taskNumber;
+//    @Transient
+//    private List<String> subTasks;
+
+    @Column(name = "taskCreationDate", nullable = false)
+    private Date creationDate;
+
+    @Column(name = "taskReminderDate", nullable = true)
+    private Date reminderDate;
+
+    @Column(name = "taskImportance", nullable = false)
+    private int importance;
+
+    @Column(name = "taskNote", nullable = true)
+    private String note;
+
+    @Column(name = "taskName", nullable = false)
+    private String taskName;
+
+    public Task() {
+    }
+
+    public Task(int importance, String taskName) {
+        this.creationDate = new Date();
         this.importance = importance;
         this.taskName = taskName;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskId=" + taskId +
+                ", creationDate=" + creationDate +
+                ", reminderDate=" + reminderDate +
+                ", taskId=" + taskId +
+                ", importance=" + importance +
+//                ", subTasks=" + subTasks +
+                ", note='" + note + '\'' +
+                ", taskName='" + taskName + '\'' +
+                '}';
     }
 
-    public LocalDateTime getReminderDate() {
-        return reminderDate;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public DateTimeFormatter getDateTimeFormatter() {
-        return dateTimeFormatter;
-    }
-
-    public int getTaskNumber() {
-        return taskNumber;
-    }
+//    public List<String> getSubTasks() {
+//        return subTasks;
+//    }
 
     public int getImportance() {
         return importance;
     }
 
-    public ArrayList<Task> getSubTasks() {
-        return subTasks;
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public Date getReminderDate() {
+        return reminderDate;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     public String getNote() {
@@ -55,28 +86,12 @@ public class Task {
         return taskName;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public void setReminderDate(LocalDateTime reminderDate) {
-        this.reminderDate = reminderDate;
-    }
-
-    public void setDateTimeFormatter(DateTimeFormatter dateTimeFormatter) {
-        this.dateTimeFormatter = dateTimeFormatter;
-    }
-
-    public void setTaskNumber(int taskNumber) {
-        this.taskNumber = taskNumber;
-    }
-
     public void setImportance(int importance) {
         this.importance = importance;
     }
 
-    public void setSubTasks(ArrayList<Task> subTasks) {
-        this.subTasks = subTasks;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public void setNote(String note) {
