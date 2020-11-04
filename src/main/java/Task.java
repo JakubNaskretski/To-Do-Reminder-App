@@ -1,5 +1,6 @@
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,6 @@ public class Task implements Serializable {
 // Task class
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "taskid", nullable = false, unique = true)
     private Long taskId;
@@ -22,11 +22,6 @@ public class Task implements Serializable {
 
     @Column(name = "taskNote", nullable = true)
     private String note;
-
-//    @Transient
-    @ElementCollection
-    @Column(name = "subTasks", nullable = true)
-    private List<String> subTasks;
 
     @Column(name = "taskCreationDate", nullable = false)
     private Date creationDate;
@@ -54,7 +49,6 @@ public class Task implements Serializable {
                 ", reminderDate=" + reminderDate +
                 ", taskId=" + taskId +
                 ", importance=" + importance +
-//                ", subTasks=" + subTasks +
                 ", note='" + note + '\'' +
                 ", taskName='" + taskName + '\'' +
                 '}';
@@ -63,10 +57,6 @@ public class Task implements Serializable {
     public Long getTaskId() {
         return taskId;
     }
-
-//    public List<String> getSubTasks() {
-//        return subTasks;
-//    }
 
     public int getImportance() {
         return importance;
@@ -107,4 +97,5 @@ public class Task implements Serializable {
     public void setTaskName(String taskName) {
         this.taskName = taskName;
     }
+
 }
