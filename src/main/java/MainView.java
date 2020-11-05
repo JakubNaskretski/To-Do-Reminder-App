@@ -18,7 +18,8 @@ public class MainView {
     private TasksController tasksController;
 
     private JLabel appTittleLabel, sortByLabel, sortByWhat, doneLabel, taskNameLabel, taskImportanceLabel, taskReminderDate, taskCreatedDate;
-    private List<JTextField> tasksList, doneTasksList;
+    private List<JPanel> tasksToDoJPanelsList;
+    private List<JPanel> tasksDoneJPanelsList;
     private JTextField task1, doneTask1, addTaskTextField;
     private JTextArea taskNoteTexrArea;
 
@@ -32,8 +33,8 @@ public class MainView {
 //        Create controller
 //        this.tasksController = new TasksController();
 
-        this.tasksList = new ArrayList<>();
-        this.doneTasksList = new ArrayList<JTextField>();
+        this.tasksToDoJPanelsList = new ArrayList<JPanel>();
+        this.tasksDoneJPanelsList = new ArrayList<JPanel>();
 
 //        Create frame
         this.frame = new JFrame();
@@ -128,14 +129,14 @@ public class MainView {
 
 
 //Iterates over list and add all tasks to the panel
-        for (JTextField taskInList : tasksList) {
-            tasksPanel.add(taskInList);
-            taskInList.setEditable(false);
-            taskInList.setBorder(BorderFactory.createTitledBorder(
+        for (JPanel tasksJPanel : tasksToDoJPanelsList) {
+            tasksPanel.add(tasksJPanel);
+//            taskInList.setEditable(false);
+            tasksJPanel.setBorder(BorderFactory.createTitledBorder(
                     BorderFactory.createRaisedBevelBorder(), "",
                     TitledBorder.CENTER,
                     TitledBorder.TOP));
-            taskInList.setPreferredSize(blockDimensions);
+            tasksJPanel.setPreferredSize(blockDimensions);
         }
 
         this.tasksScrollPanel = new JScrollPane(tasksPanel);
@@ -179,9 +180,9 @@ public class MainView {
 
 
 //Iterates over list and add all tasks to the panel
-        for (JTextField doneTaskInList : doneTasksList) {
+        for (JPanel doneTaskInList : tasksDoneJPanelsList) {
             doneTasksPanel.add(doneTaskInList);
-            doneTaskInList.setEditable(false);
+//            doneTaskInList.setEditable(false);
             doneTaskInList.setBorder(BorderFactory.createTitledBorder(
                     BorderFactory.createRaisedBevelBorder(), "",
                     TitledBorder.CENTER,
@@ -278,20 +279,27 @@ public class MainView {
         frame.repaint();
     }
 
-    public void revaluateLists(){
-        for (JTextField taskInList : tasksList) {
-            tasksPanel.add(taskInList);
-            taskInList.setEditable(false);
-            taskInList.setBorder(BorderFactory.createTitledBorder(
+    public void revaluateToDoList(){
+        tasksPanel.removeAll();
+        for (JPanel taskJPanel : tasksToDoJPanelsList) {
+            taskJPanel.setBorder(BorderFactory.createTitledBorder(
                     BorderFactory.createRaisedBevelBorder(), "",
                     TitledBorder.CENTER,
                     TitledBorder.TOP));
-            taskInList.setPreferredSize(blockDimensions);
+            tasksPanel.add(taskJPanel);
+            taskJPanel.setPreferredSize(blockDimensions);
         }
 
-        for (JTextField doneTaskInList : doneTasksList) {
+        frame.revalidate();
+        frame.repaint();
+
+    }
+
+    public void revaluateDoneList(){
+        doneTasksPanel.removeAll();
+        for (JPanel doneTaskInList : tasksDoneJPanelsList) {
             doneTasksPanel.add(doneTaskInList);
-            doneTaskInList.setEditable(false);
+//            doneTaskInList.setEditable(false);
             doneTaskInList.setBorder(BorderFactory.createTitledBorder(
                     BorderFactory.createRaisedBevelBorder(), "",
                     TitledBorder.CENTER,
@@ -324,15 +332,23 @@ public class MainView {
         return taskCreatedDate;
     }
 
-    public List<JTextField> getTasksList() {
-        return tasksList;
+    public List<JPanel> getTasksToDoJPanelsList() {
+        return tasksToDoJPanelsList;
     }
 
-    public List<JTextField> getDoneTasksList() {
-        return doneTasksList;
+    public List<JPanel> getTasksDoneJPanelsList() {
+        return tasksDoneJPanelsList;
     }
 
     public JTextField getAddTaskTextField() {
         return addTaskTextField;
+    }
+
+    public Dimension getBlockDimensions() {
+        return blockDimensions;
+    }
+
+    public Dimension getTaskDimensions() {
+        return taskDimensions;
     }
 }

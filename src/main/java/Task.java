@@ -32,6 +32,9 @@ public class Task implements Serializable {
     @Column(name = "taskImportance", nullable = false)
     private int importance;
 
+    @Column(name = "isTaskDone", nullable = false)
+    private int isTaskDone;
+
     public Task() {
     }
 
@@ -39,6 +42,7 @@ public class Task implements Serializable {
         this.creationDate = new Date();
         this.importance = importance;
         this.taskName = taskName;
+        this.isTaskDone = 0;
     }
 
     @Override
@@ -78,6 +82,10 @@ public class Task implements Serializable {
         return note;
     }
 
+    public int getIsTaskDone() {
+        return isTaskDone;
+    }
+
     public String getTaskName() {
         return taskName;
     }
@@ -98,4 +106,7 @@ public class Task implements Serializable {
         this.taskName = taskName;
     }
 
+    public void setIsTaskDone(int isTaskDone) {
+        this.isTaskDone = isTaskDone;
+    }
 }
