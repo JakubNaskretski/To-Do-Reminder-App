@@ -1,4 +1,6 @@
 import javax.persistence.*;
+import javax.swing.*;
+import java.awt.event.*;
 import java.util.Date;
 import java.util.List;
 
@@ -7,10 +9,77 @@ public class TasksController {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
             .createEntityManagerFactory("To-Do-Reminder-App-1");
 
+        private MainView mainView;
+
     public TasksController() {
 
+        Thread t1 = new Thread(() -> {
+            mainView = new MainView();
+            });
+
+
+        Thread t2 = new Thread(() -> {
+            if (getTasks() != null) {
+                refreshTaskLists();
+            }
+        });
+
+        t1.start();
+        try {
+            t1.join(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t2.start();
+
+        MouseListener addTaskClicked = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainView.getAddTaskTextField().requestFocus();
+                mainView.getAddTaskTextField().setText("");
+                mainView.getAddTaskTextField().setEditable(true);
+            }
+        };
+
+        KeyAdapter addTaskEnter = new KeyAdapter(){
+            @Override
+            public void keyPressed(KeyEvent e){
+                if (e.getKeyCode() == KeyEvent.VK_ENTER && mainView.getAddTaskTextField().isEnabled()){
+                    addTask(1, mainView.getAddTaskTextField().getText());
+                    mainView.getAddTaskTextField().setText("+Add new task");
+                    mainView.getAddTaskTextField().setEditable(false);
+                    refreshTaskLists();
+                }
+            }
+        };
+
+        mainView.getAddTaskTextField().addMouseListener(addTaskClicked);
+        mainView.getAddTaskTextField().addKeyListener(addTaskEnter);
+
+        }
+
+//      Downloads tasks from DB and refreshes lists in the view
+        public void refreshTaskLists(){
+            mainView.getTasksList().clear();
+            for (Task taskInList : getTasks()) {
+                mainView.getTasksList().add(new JTextField(taskInList.getTaskName()));
+                mainView.revaluateLists();
+            }
+        }
+
+    public void createView(){
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    mainView = new MainView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
+//TODO: where to use it
     public static void cloeEntityManager(){
         ENTITY_MANAGER_FACTORY.close();
     }
@@ -71,7 +140,7 @@ public class TasksController {
         }
     }
 
-    public static void getTasks() {
+    public static List<Task> getTasks() {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
@@ -80,7 +149,7 @@ public class TasksController {
 
         // Issue the query and get a matching Customer
         TypedQuery<Task> tq = em.createQuery(strQuery, Task.class);
-        List<Task> tasks;
+        List<Task> tasks = null;
         try {
             // Get matching customer object and output
             tasks = tq.getResultList();
@@ -92,6 +161,7 @@ public class TasksController {
         finally {
             em.close();
         }
+        return tasks;
     }
 
     public static void changeTaskName(int id, String taskName) {

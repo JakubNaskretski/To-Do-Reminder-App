@@ -6,8 +6,6 @@ import java.util.List;
 
 public class Main {
 
-    // Create an EntityManagerFactory when you start the application
-
     public static void main(String[] args) {
 
         try {
@@ -25,20 +23,8 @@ public class Main {
         }
 
 
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    try {
-                        createAndShowGUI();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-
-        public static void createAndShowGUI() throws Exception {
-            new MainView();
-        }
+        new TasksController();
+    }
 
 
 //        addTask( 1, "testTask1");
