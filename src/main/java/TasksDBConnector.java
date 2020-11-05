@@ -140,7 +140,7 @@ public class TasksDBConnector {
         }
     }
 
-    public static void makeTaskDone(int id) {
+    public static void makeTaskDone(Long id) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
 
@@ -170,7 +170,7 @@ public class TasksDBConnector {
         }
     }
 
-    public static void deleteTask(int id) {
+    public static void deleteTask(Long id) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
         Task task = null;

@@ -6,10 +6,12 @@ public class TasksController {
 
         private MainView mainView;
         private TasksDBConnector tasksDBConnector;
+        private TasksController tasksController;
 
     public TasksController() {
 
-        tasksDBConnector = new TasksDBConnector();
+        this.tasksDBConnector = new TasksDBConnector();
+        this.tasksController = this;
 
         Thread t1 = new Thread(() -> {
             mainView = new MainView();
@@ -32,6 +34,7 @@ public class TasksController {
         }
         t2.start();
 
+// Action listeners for add task
         MouseListener addTaskClicked = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -52,14 +55,16 @@ public class TasksController {
                 }
             }
         };
-
+// Add action listeners for add task
         mainView.getAddTaskTextField().addMouseListener(addTaskClicked);
         mainView.getAddTaskTextField().addKeyListener(addTaskEnter);
 
         }
 
-//      Downloads tasks from DB and refreshes lists in the view
+// Downloads ToDoTasks from DB via connector, sets layout checkbox and text, adds task to tasksList to display them
+// Makes action listener for task marked as done
         public void refreshToDoTaskList(){
+//        Clears list of tasks so there will be no duplicates
             mainView.getTasksToDoJPanelsList().clear();
 
             for (Task taskToDoInList : tasksDBConnector.getToDoTasks()) {
@@ -70,12 +75,37 @@ public class TasksController {
                 tmpPanel.setLayout(gridBagLayout);
 
                 JCheckBox tmpCheckBox = new JCheckBox();
+                // If checkbox marked calls makeTaskDone
+                tmpCheckBox.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JCheckBox cb = (JCheckBox) e.getSource();
+                        if (cb.isSelected()) {
+
+                            makeTaskDone(taskToDoInList.getTaskId());
+
+                        }
+                    }
+                });
+
                 c.weightx = 0.1;
                 c.gridx = 0;
                 c.gridy = 0;
                 tmpPanel.add(tmpCheckBox, c);
 
                 JTextField tmpJTextField = new JTextField(taskToDoInList.getTaskName());
+
+                tmpJTextField.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getButton() == MouseEvent.BUTTON3){
+//                            TODO: is it good idea to call it recursively?
+                            RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(taskToDoInList, tasksController);
+                            rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
+                        }
+                    }
+                });
+
                 tmpJTextField.setBorder(null);
                 tmpJTextField.setEditable(false);
                 c.fill = GridBagConstraints.HORIZONTAL;
@@ -90,8 +120,9 @@ public class TasksController {
             mainView.revaluateToDoList();
         }
 
-        //      Downloads tasks from DB and refreshes lists in the view
+// Downloads DoneTasks from DB via connector, sets layout checkbox and text, adds task to tasksList to display them
     public void refreshDoneTaskList(){
+//        Clears list of tasks so there will be no duplicates
         mainView.getTasksDoneJPanelsList().clear();
 
         for (Task tasksDoneInList : tasksDBConnector.getDoneTasks()) {
@@ -101,13 +132,20 @@ public class TasksController {
             JPanel tmpPanel = new JPanel();
             tmpPanel.setLayout(gridBagLayout);
 
-            JCheckBox tmpCheckBox = new JCheckBox();
-            c.weightx = 0.1;
-            c.gridx = 0;
-            c.gridy = 0;
-            tmpPanel.add(tmpCheckBox, c);
-
             JTextField tmpJTextField = new JTextField(tasksDoneInList.getTaskName());
+
+            tmpJTextField.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON3){
+//                        TODO: is it good idea to call it recursively?
+                        RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(tasksDoneInList, tasksController);
+                        rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
+                        refreshDoneTaskList();
+                    }
+                }
+            });
+
             tmpJTextField.setBorder(null);
             tmpJTextField.setEditable(false);
             c.fill = GridBagConstraints.HORIZONTAL;
@@ -122,22 +160,10 @@ public class TasksController {
         mainView.revaluateDoneList();
     }
 
-//        public Void taskDone(){
-//
-//        }
-
-    public void createView(){
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    mainView = new MainView();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    public void makeTaskDone(Long taskId){
+        tasksDBConnector.makeTaskDone(taskId);
+        refreshToDoTaskList();
+        refreshDoneTaskList();
     }
-
-
 
 }

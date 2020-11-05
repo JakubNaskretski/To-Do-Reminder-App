@@ -12,15 +12,11 @@ public class MainView {
     private JPanel mainPanel, leftPanel, rightTopPanel, rightBottomPanel, tasksPanel, doneTasksPanel;
     private JScrollPane tasksScrollPanel, doneTasksScrollPanel;
 
-    private Dimension blockDimensions, tasksBlockDimensions, taskDimensions;
-
-
-    private TasksController tasksController;
+    private Dimension blockDimensions, tasksBlockDimensions;
 
     private JLabel appTittleLabel, sortByLabel, sortByWhat, doneLabel, taskNameLabel, taskImportanceLabel, taskReminderDate, taskCreatedDate;
-    private List<JPanel> tasksToDoJPanelsList;
-    private List<JPanel> tasksDoneJPanelsList;
-    private JTextField task1, doneTask1, addTaskTextField;
+    private List<JPanel> tasksToDoJPanelsList, tasksDoneJPanelsList;
+    private JTextField addTaskTextField;
     private JTextArea taskNoteTexrArea;
 
     public MainView() {
@@ -30,43 +26,38 @@ public class MainView {
         this.screenHeight = (int) screenSize.getHeight();
         this.screenWidth = (int) screenSize.getWidth();
 
-//        Create controller
-//        this.tasksController = new TasksController();
-
         this.tasksToDoJPanelsList = new ArrayList<JPanel>();
         this.tasksDoneJPanelsList = new ArrayList<JPanel>();
 
 //        Create frame
         this.frame = new JFrame();
         frame.setSize(new Dimension((screenWidth / 5), (screenHeight / 3)));
-
-        frame.setLocationRelativeTo(null);
         frame.setLocation(((screenWidth / 2) - (screenWidth / 4)), ((screenHeight / 2) - (screenHeight / 4)));
+        frame.setLocationRelativeTo(null);
 
+//        Creating planned task sizes
         this.tasksBlockDimensions = new Dimension(frame.getWidth() / 2, (frame.getHeight() / 10)*4);
         this.blockDimensions = new Dimension((int) (tasksBlockDimensions.getWidth()*0.8), ((int) (frame.getHeight() / 10)));
-//        this.blockDimensions = new Dimension(screenWidth / 18, screenHeight / 15);
-//        this.tasksBlockDimensions = new Dimension(screenWidth / 17, screenHeight / 9);
 
         addComponentsToThePanel();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("ToDo");
-
 
 //        Display Frame
         frame.pack();
         frame.setVisible(true);
     }
 
+
+
     private void addComponentsToThePanel() {
 
         mainPanel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-//Tittle
+// Setting AppTitle on the main panel
         this.appTittleLabel = new JLabel("ToDo");
         appTittleLabel.setFont(new Font("serif", Font.BOLD, 25));
-//        appTittleLabel.setPreferredSize(blockDimensions);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 15, 10, 15);
         c.gridwidth = 6;
@@ -74,130 +65,63 @@ public class MainView {
         c.gridy = 0;
         mainPanel.add(appTittleLabel, c);
 
+
+
+// Creating left panel for components
         leftPanel = new JPanel(new GridBagLayout());
         GridBagConstraints lpc = new GridBagConstraints();
 
-
-        //Tittle
         this.sortByLabel = new JLabel("Sort by");
-//        sortByLabel.setPreferredSize(blockDimensions);
         lpc.fill = GridBagConstraints.HORIZONTAL;
         lpc.gridwidth = 1;
         lpc.gridx = 0;
         lpc.gridy = 0;
         leftPanel.add(sortByLabel, lpc);
 
-        //Tittle
         this.sortByWhat = new JLabel("Importance");
         lpc.gridx = 1;
         leftPanel.add(sortByWhat, lpc);
 
-//Creates panel for tasks sets and sets its layout
-//      TODO: how to add each task
+// Crating panel for ToDoTasks along with scroll pane and setting its layout
         this.tasksPanel = new JPanel();
-        tasksPanel.setLayout(new BoxLayout(tasksPanel, BoxLayout.PAGE_AXIS));
-//        tasksPanel.setPreferredSize(new Dimension(100,50));
-        tasksPanel.setBackground(Color.gray);
-//
-//        this.task1 = new JTextField("Task 1");
-//        tasksList.add(task1);
-
-////        TestTasks
-//        JTextField testTextArea1 = new JTextField("Task 2");
-//        tasksList.add(testTextArea1);
-//
-////        TestTasks
-//        JTextField testTextArea2 = new JTextField("Task 3");
-//        tasksList.add(testTextArea2);
-//
-//
-////        TestTasks
-//        JTextField testTextArea3 = new JTextField("Task 4");
-//        tasksList.add(testTextArea3);
-//
-////        TestTasks
-//        JTextField testTextArea4 = new JTextField("Task 5");
-//        tasksList.add(testTextArea4);
-//
-////        TestTasks
-//        JTextField testTextArea5 = new JTextField("Task 6");
-//        tasksList.add(testTextArea5);
-//
-////        TestTasks
-//        JTextField testTextArea6 = new JTextField("Task 7");
-//        tasksList.add(testTextArea6);
-
-
-//Iterates over list and add all tasks to the panel
-        for (JPanel tasksJPanel : tasksToDoJPanelsList) {
-            tasksPanel.add(tasksJPanel);
-//            taskInList.setEditable(false);
-            tasksJPanel.setBorder(BorderFactory.createTitledBorder(
-                    BorderFactory.createRaisedBevelBorder(), "",
-                    TitledBorder.CENTER,
-                    TitledBorder.TOP));
-            tasksJPanel.setPreferredSize(blockDimensions);
-        }
-
+        // Sett layout
+        tasksPanel.setLayout(new BoxLayout(tasksPanel, BoxLayout.Y_AXIS));
+        // Create scroll pane
         this.tasksScrollPanel = new JScrollPane(tasksPanel);
+        // Set preff size of scroll pane
         tasksScrollPanel.setPreferredSize(new Dimension((int)tasksBlockDimensions.getWidth(), (int)tasksBlockDimensions.getHeight()));
-        System.out.println(tasksBlockDimensions.getHeight()/4);
+        // Set scroll unit
         tasksScrollPanel.getVerticalScrollBar().setUnitIncrement((int) blockDimensions.getHeight());
-
+        // Set when scroll bar is needed
         tasksScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         lpc.gridwidth = 3;
         lpc.gridx = 0;
         lpc.gridy = 1;
         leftPanel.add(tasksScrollPanel, lpc);
 
-//Done tasks
+//Done tasks label
         this.doneLabel = new JLabel("Done");
         lpc.gridwidth = 1;
         lpc.gridy = 2;
         leftPanel.add(doneLabel, lpc);
 
-//      TODO: how to add each task
-
+//Crating panel for DoneTasks along with scroll pane and setting its layout
         this.doneTasksPanel = new JPanel();
-        doneTasksPanel.setLayout(new BoxLayout(doneTasksPanel, BoxLayout.PAGE_AXIS));
-        doneTasksPanel.setBackground(null);
-//
-//        this.doneTask1 = new JTextField("Task 1");
-//        doneTasksList.add(doneTask1);
-//
-////        TestTasks
-//        JTextField doneTestTextArea1 = new JTextField("Task 2");
-//        doneTasksList.add(doneTestTextArea1);
-//
-////        TestTasks
-//        JTextField doneTestTextArea2 = new JTextField("Task 3");
-//        doneTasksList.add(doneTestTextArea2);
-//
-//
-////        TestTasks
-//        JTextField doneTestTextArea3 = new JTextField("Task 4");
-//        doneTasksList.add(doneTestTextArea3);
-
-
-//Iterates over list and add all tasks to the panel
-        for (JPanel doneTaskInList : tasksDoneJPanelsList) {
-            doneTasksPanel.add(doneTaskInList);
-//            doneTaskInList.setEditable(false);
-            doneTaskInList.setBorder(BorderFactory.createTitledBorder(
-                    BorderFactory.createRaisedBevelBorder(), "",
-                    TitledBorder.CENTER,
-                    TitledBorder.TOP));
-            doneTaskInList.setPreferredSize(blockDimensions);
-        }
-
+        // Sett layout
+        doneTasksPanel.setLayout(new BoxLayout(doneTasksPanel, BoxLayout.Y_AXIS));
+        // Create scroll pane
         this.doneTasksScrollPanel = new JScrollPane(doneTasksPanel);
-        doneTasksPanel.setPreferredSize(tasksBlockDimensions);
+        // Set preff size of scroll pane
+        doneTasksScrollPanel.setPreferredSize(new Dimension((int)tasksBlockDimensions.getWidth(), (int)tasksBlockDimensions.getHeight()));
+        // Set scroll unit
+        doneTasksScrollPanel.getVerticalScrollBar().setUnitIncrement((int) blockDimensions.getHeight());
+        // Set when scroll bar is needed
         doneTasksScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         lpc.gridwidth = 3;
         lpc.gridy = 3;
         leftPanel.add(doneTasksScrollPanel, lpc);
 
-//Addtask
+//Add task field
         this.addTaskTextField = new JTextField("+ Add new task");
         addTaskTextField.setPreferredSize(blockDimensions);
         addTaskTextField.setEditable(false);
@@ -205,51 +129,46 @@ public class MainView {
         lpc.gridy = 4;
         leftPanel.add(addTaskTextField, lpc);
 
+
+// Creating right top panel for components
         rightTopPanel = new JPanel(new GridBagLayout());
         GridBagConstraints rtpc = new GridBagConstraints();
 
-//TaskName
         this.taskNameLabel = new JLabel("Name");
         rtpc.fill = GridBagConstraints.HORIZONTAL;
         rtpc.gridwidth = 1;
         rtpc.gridy = 0;
         rightTopPanel.add(taskNameLabel, rtpc);
 
-//TaskName
         this.taskImportanceLabel = new JLabel("Importance");
         rtpc.gridy = 1;
         rightTopPanel.add(taskImportanceLabel, rtpc);
 
-//Reminder
         this.taskReminderDate = new JLabel("Reminder date");
         rtpc.gridy = 2;
         rightTopPanel.add(taskReminderDate, rtpc);
 
-//TaskNote
         this.taskNoteTexrArea = new JTextArea("Task note Area");
         rtpc.gridy = 3;
         rightTopPanel.add(taskNoteTexrArea, rtpc);
 
 
+// Creating right bottom panel for components
         rightBottomPanel = new JPanel();
         rightBottomPanel = new JPanel(new GridBagLayout());
         GridBagConstraints rbpc = new GridBagConstraints();
-
 //Created
         this.taskCreatedDate = new JLabel("Created date");
         rbpc.fill = GridBagConstraints.HORIZONTAL;
-//        rbpc.anchor = GridBagConstraints.LAST_LINE_END;
-//        rbpc.insets = new Insets(0  , 0, 10, 0);
         rbpc.gridwidth = 1;
         rbpc.gridx = 0;
         rbpc.gridy = 0;
         rightBottomPanel.add(taskCreatedDate, rbpc);
 
 
-//        mainPanel = new JPanel();
+// Adding left, top righ, bottom right panels to the main panel
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 3;
-//        c.gridheight = 9;
         c.gridheight = 5;
         c.insets = new Insets(5, 15, 10, 10);
         c.gridx = 0;
@@ -279,6 +198,7 @@ public class MainView {
         frame.repaint();
     }
 
+// Repaints container with ToDOTasks
     public void revaluateToDoList(){
         tasksPanel.removeAll();
         for (JPanel taskJPanel : tasksToDoJPanelsList) {
@@ -295,15 +215,15 @@ public class MainView {
 
     }
 
+// Repaints container with DoneTasks
     public void revaluateDoneList(){
         doneTasksPanel.removeAll();
         for (JPanel doneTaskInList : tasksDoneJPanelsList) {
-            doneTasksPanel.add(doneTaskInList);
-//            doneTaskInList.setEditable(false);
             doneTaskInList.setBorder(BorderFactory.createTitledBorder(
                     BorderFactory.createRaisedBevelBorder(), "",
                     TitledBorder.CENTER,
                     TitledBorder.TOP));
+            doneTasksPanel.add(doneTaskInList);
             doneTaskInList.setPreferredSize(blockDimensions);
         }
 
@@ -348,7 +268,4 @@ public class MainView {
         return blockDimensions;
     }
 
-    public Dimension getTaskDimensions() {
-        return taskDimensions;
-    }
 }
