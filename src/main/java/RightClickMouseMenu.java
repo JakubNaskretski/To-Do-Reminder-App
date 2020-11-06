@@ -8,8 +8,8 @@ public class RightClickMouseMenu extends JPopupMenu {
         item = new JMenuItem("Remove");
         item.addActionListener(e -> {
             TasksDBConnector.deleteTask(task.getTaskId());
-            tasksController.refreshToDoTaskList();
-            tasksController.refreshDoneTaskList();
+//            tasksController.refreshToDoTaskList();
+//            tasksController.refreshDoneTaskList();
         });
         add(item);
     }

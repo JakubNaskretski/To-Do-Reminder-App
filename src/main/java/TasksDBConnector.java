@@ -43,7 +43,7 @@ public class TasksDBConnector {
         }
     }
 
-    public static void getTask(long id) {
+    public static Task getTask(long id) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase t refers to the object
@@ -55,6 +55,7 @@ public class TasksDBConnector {
         tq.setParameter("taskId", id);
 
         Task task = null;
+
         try {
             // Get matching task object and output
             task = tq.getSingleResult();
@@ -64,6 +65,7 @@ public class TasksDBConnector {
         } finally {
             em.close();
         }
+        return task;
     }
 
     public static List<Task> getToDoTasks() {
