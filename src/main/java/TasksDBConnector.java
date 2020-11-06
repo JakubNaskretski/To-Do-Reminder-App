@@ -110,7 +110,7 @@ public class TasksDBConnector {
         return tasks;
     }
 
-    public static void changeTaskName(int id, String taskName) {
+    public static void changeTaskName(Long id, String taskName) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction et = null;
 
@@ -124,6 +124,66 @@ public class TasksDBConnector {
             // Find customer and make changes
             task = em.find(Task.class, id);
             task.setTaskName(taskName);
+
+            // Save the customer object
+            em.persist(task);
+            et.commit();
+        } catch (Exception ex) {
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+    }
+
+    public static void changeTaskImportance(Long id, int Importance) {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+
+        Task task = null;
+
+        try {
+            // Get transaction and start
+            et = em.getTransaction();
+            et.begin();
+
+            // Find customer and make changes
+            task = em.find(Task.class, id);
+            task.setImportance(Importance);
+
+            // Save the customer object
+            em.persist(task);
+            et.commit();
+        } catch (Exception ex) {
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+    }
+
+    public static void changeTaskNote(Long id, String note) {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+
+        Task task = null;
+
+        try {
+            // Get transaction and start
+            et = em.getTransaction();
+            et.begin();
+
+            // Find customer and make changes
+            task = em.find(Task.class, id);
+            task.setNote(note);
 
             // Save the customer object
             em.persist(task);

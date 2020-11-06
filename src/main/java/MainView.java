@@ -15,10 +15,9 @@ public class MainView {
 
     private Dimension blockDimensions, tasksBlockDimensions;
 
-    private JLabel appTittleLabel, sortByLabel, sortByWhat, doneLabel,
-            taskNameLabel, taskImportanceLabel, taskReminderDate, taskCreatedDate;
+    private JLabel appTittleLabel, sortByLabel, sortByWhat, doneLabel,taskCreatedDate;
     private List<JPanel> tasksToDoJPanelsList, tasksDoneJPanelsList;
-    private JTextField addTaskTextField;
+    private JTextField addTaskTextField, taskNameLabel, taskImportanceLabel, taskReminderDate;
     private JTextArea taskNoteTexrArea;
 
     public MainView() {
@@ -136,17 +135,20 @@ public class MainView {
         GridBagConstraints rtpc = new GridBagConstraints();
 //        rightTopPanel.setPreferredSize( new Dimension(frame.getWidth()/3, (int) (frame.getHeight()*0.8)));
 
-        this.taskNameLabel = new JLabel("Name");
+        this.taskNameLabel = new JTextField("Name");
+        taskNameLabel.setBackground(null);
         rtpc.fill = GridBagConstraints.HORIZONTAL;
         rtpc.gridwidth = 1;
         rtpc.gridy = 0;
         rightTopPanel.add(taskNameLabel, rtpc);
 
-        this.taskImportanceLabel = new JLabel("Importance");
+        this.taskImportanceLabel = new JTextField("Importance");
+        taskImportanceLabel.setBackground(null);
         rtpc.gridy = 1;
         rightTopPanel.add(taskImportanceLabel, rtpc);
 
-        this.taskReminderDate = new JLabel("Reminder date");
+        this.taskReminderDate = new JTextField("Reminder date");
+        taskReminderDate.setBackground(null);
         rtpc.gridy = 2;
         rightTopPanel.add(taskReminderDate, rtpc);
 
@@ -244,15 +246,15 @@ public class MainView {
         return taskNoteTexrArea;
     }
 
-    public JLabel getTaskNameLabel() {
+    public JTextField getTaskNameLabel() {
         return taskNameLabel;
     }
 
-    public JLabel getTaskImportanceLabel() {
+    public JTextField getTaskImportanceLabel() {
         return taskImportanceLabel;
     }
 
-    public JLabel getTaskReminderDate() {
+    public JTextField getTaskReminderDate() {
         return taskReminderDate;
     }
 
