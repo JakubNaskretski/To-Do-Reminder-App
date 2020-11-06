@@ -9,12 +9,14 @@ public class MainView {
     private int screenHeight, screenWidth;
 
     private JFrame frame;
-    private JPanel mainPanel, leftPanel, rightTopPanel, rightBottomPanel, tasksPanel, doneTasksPanel;
+    private JPanel mainPanel, leftPanel, rightTopPanel, rightBottomPanel,
+            tasksPanel, doneTasksPanel;
     private JScrollPane tasksScrollPanel, doneTasksScrollPanel;
 
     private Dimension blockDimensions, tasksBlockDimensions;
 
-    private JLabel appTittleLabel, sortByLabel, sortByWhat, doneLabel, taskNameLabel, taskImportanceLabel, taskReminderDate, taskCreatedDate;
+    private JLabel appTittleLabel, sortByLabel, sortByWhat, doneLabel,
+            taskNameLabel, taskImportanceLabel, taskReminderDate, taskCreatedDate;
     private List<JPanel> tasksToDoJPanelsList, tasksDoneJPanelsList;
     private JTextField addTaskTextField;
     private JTextArea taskNoteTexrArea;
@@ -64,7 +66,6 @@ public class MainView {
         c.gridx = 0;
         c.gridy = 0;
         mainPanel.add(appTittleLabel, c);
-
 
 
 // Creating left panel for components
@@ -133,6 +134,7 @@ public class MainView {
 // Creating right top panel for components
         rightTopPanel = new JPanel(new GridBagLayout());
         GridBagConstraints rtpc = new GridBagConstraints();
+//        rightTopPanel.setPreferredSize( new Dimension(frame.getWidth()/3, (int) (frame.getHeight()*0.8)));
 
         this.taskNameLabel = new JLabel("Name");
         rtpc.fill = GridBagConstraints.HORIZONTAL;
@@ -148,7 +150,8 @@ public class MainView {
         rtpc.gridy = 2;
         rightTopPanel.add(taskReminderDate, rtpc);
 
-        this.taskNoteTexrArea = new JTextArea("Task note Area");
+        this.taskNoteTexrArea = new JTextArea("Task note Area", 2,6);
+        taskNoteTexrArea.setBackground(null);
         rtpc.gridy = 3;
         rightTopPanel.add(taskNoteTexrArea, rtpc);
 
@@ -166,7 +169,7 @@ public class MainView {
         rightBottomPanel.add(taskCreatedDate, rbpc);
 
 
-// Adding left, top righ, bottom right panels to the main panel
+// Adding left, top right, bottom right panels to the main panel
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 3;
         c.gridheight = 5;
@@ -176,6 +179,7 @@ public class MainView {
         mainPanel.add(leftPanel, c);
 
         c.insets = new Insets(5, 10, 10, 15);
+        c.weightx = 0.5;
         c.gridheight = 4;
         c.gridx = 4;
         c.gridy = 1;
@@ -234,6 +238,10 @@ public class MainView {
 
     public JLabel getSortByWhat() {
         return sortByWhat;
+    }
+
+    public JTextArea getTaskNoteTexrArea() {
+        return taskNoteTexrArea;
     }
 
     public JLabel getTaskNameLabel() {

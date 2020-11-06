@@ -49,12 +49,12 @@ public class Task implements Serializable {
     public String toString() {
         return "Task{" +
                 "taskId=" + taskId +
+                ", taskName='" + taskName + '\'' +
+                ", note='" + note + '\'' +
                 ", creationDate=" + creationDate +
                 ", reminderDate=" + reminderDate +
-                ", taskId=" + taskId +
                 ", importance=" + importance +
-                ", note='" + note + '\'' +
-                ", taskName='" + taskName + '\'' +
+                ", isTaskDone=" + isTaskDone +
                 '}';
     }
 

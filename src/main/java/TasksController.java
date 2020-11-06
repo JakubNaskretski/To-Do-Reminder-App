@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 
 public class TasksController {
 
@@ -102,6 +104,13 @@ public class TasksController {
 //                            TODO: is it good idea to call it recursively?
                             RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(taskToDoInList, tasksController);
                             rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
+                        } else if (e.getButton() == MouseEvent.BUTTON1){
+                            mainView.getTaskNameLabel().setText(taskToDoInList.getTaskName());
+                            mainView.getTaskImportanceLabel().setText(String.valueOf(taskToDoInList.getImportance()));
+                            mainView.getTaskReminderDate().setText(String.valueOf(taskToDoInList.getReminderDate()));
+                            mainView.getTaskNoteTexrArea().setText(taskToDoInList.getNote());
+//                            TODO: make this not change size of frame
+//                            mainView.getTaskCreatedDate().setText(String.valueOf(taskToDoInList.getCreationDate()));
                         }
                     }
                 });
@@ -125,6 +134,12 @@ public class TasksController {
 //        Clears list of tasks so there will be no duplicates
         mainView.getTasksDoneJPanelsList().clear();
 
+//        Creates custom font type for Strikethrough text
+        Font font = new Font("arial", Font.PLAIN, 12);
+        Map fontAttr = font.getAttributes();
+        fontAttr.put (TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+        Font myFont = new Font(fontAttr);
+
         for (Task tasksDoneInList : tasksDBConnector.getDoneTasks()) {
             GridBagLayout gridBagLayout = new GridBagLayout();
             GridBagConstraints c = new GridBagConstraints();
@@ -134,6 +149,9 @@ public class TasksController {
 
             JTextField tmpJTextField = new JTextField(tasksDoneInList.getTaskName());
 
+//          Make strikethrough text
+            tmpJTextField.setFont(myFont);
+
             tmpJTextField.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -142,6 +160,13 @@ public class TasksController {
                         RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(tasksDoneInList, tasksController);
                         rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
                         refreshDoneTaskList();
+                    } else if (e.getButton() == MouseEvent.BUTTON1){
+                        mainView.getTaskNameLabel().setText(tasksDoneInList.getTaskName());
+                        mainView.getTaskImportanceLabel().setText(String.valueOf(tasksDoneInList.getImportance()));
+                        mainView.getTaskReminderDate().setText(String.valueOf(tasksDoneInList.getReminderDate()));
+                        mainView.getTaskNoteTexrArea().setText(tasksDoneInList.getNote());
+//                            TODO: make this not change size of frame
+//                        mainView.getTaskCreatedDate().setText(String.valueOf(tasksDoneInList.getCreationDate()));
                     }
                 }
             });
