@@ -71,7 +71,7 @@ public class MainView {
         leftPanel = new JPanel(new GridBagLayout());
         GridBagConstraints lpc = new GridBagConstraints();
 
-        this.sortByLabel = new JLabel("Sort by");
+        this.sortByLabel = new JLabel("Sort by ");
         lpc.fill = GridBagConstraints.HORIZONTAL;
         lpc.gridwidth = 1;
         lpc.gridx = 0;
@@ -135,40 +135,77 @@ public class MainView {
         GridBagConstraints rtpc = new GridBagConstraints();
 //        rightTopPanel.setPreferredSize( new Dimension(frame.getWidth()/3, (int) (frame.getHeight()*0.8)));
 
-        this.taskNameLabel = new JTextField("Name");
-        taskNameLabel.setBackground(null);
+//        Empty JLabel to lower all components
+//        TODO: mby use height of sorting tag ?
+        JLabel emptyLabel1 = new JLabel(" ");
         rtpc.fill = GridBagConstraints.HORIZONTAL;
         rtpc.gridwidth = 1;
         rtpc.gridy = 0;
+        rightTopPanel.add(emptyLabel1, rtpc);
+
+
+        this.taskNameLabel = new JTextField("Name");
+        taskNameLabel.setBorder(null);
+        taskNameLabel.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()/3));
+        taskNameLabel.setBackground(null);
+        rtpc.fill = GridBagConstraints.HORIZONTAL;
+        rtpc.gridwidth = 1;
+        rtpc.gridy = 1;
         rightTopPanel.add(taskNameLabel, rtpc);
 
         this.taskImportanceLabel = new JTextField("Importance");
+        taskImportanceLabel.setBorder(null);
+        taskImportanceLabel.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()/3));
         taskImportanceLabel.setBackground(null);
-        rtpc.gridy = 1;
+        rtpc.gridy = 2;
         rightTopPanel.add(taskImportanceLabel, rtpc);
 
         this.taskReminderDate = new JTextField("Reminder date");
+        taskReminderDate.setBorder(null);
+        taskReminderDate.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()/3));
         taskReminderDate.setBackground(null);
-        rtpc.gridy = 2;
+        rtpc.gridy = 3;
         rightTopPanel.add(taskReminderDate, rtpc);
 
+        //        Empty JLabel to lower all components
+//        TODO: mby use height of sorting tag ?
+        JLabel emptyLabel2 = new JLabel(" ");
+        rtpc.fill = GridBagConstraints.HORIZONTAL;
+        rtpc.gridwidth = 1;
+        rtpc.gridy = 4;
+        rightTopPanel.add(emptyLabel2, rtpc);
+
         this.taskNoteTexrArea = new JTextArea("Task note Area", 2,6);
+        taskNoteTexrArea.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()));
+        taskNoteTexrArea.setLineWrap(true);
         taskNoteTexrArea.setBackground(null);
-        rtpc.gridy = 3;
+        rtpc.gridy = 5;
         rightTopPanel.add(taskNoteTexrArea, rtpc);
 
+        //        Empty JLabel to lower all components
+//        TODO: mby use height of sorting tag ?
+        JLabel emptyLabel3 = new JLabel(" ");
+        rtpc.fill = GridBagConstraints.HORIZONTAL;
+        rtpc.gridwidth = 1;
+        rtpc.gridy = 6;
+        rightTopPanel.add(emptyLabel3, rtpc);
 
-// Creating right bottom panel for components
-        rightBottomPanel = new JPanel();
-        rightBottomPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints rbpc = new GridBagConstraints();
-//Created
         this.taskCreatedDate = new JLabel("Created date");
-        rbpc.fill = GridBagConstraints.HORIZONTAL;
-        rbpc.gridwidth = 1;
-        rbpc.gridx = 0;
-        rbpc.gridy = 0;
-        rightBottomPanel.add(taskCreatedDate, rbpc);
+        rtpc.gridy = 7;
+        rightTopPanel.add(taskCreatedDate, rtpc);
+
+
+//// Creating right bottom panel for components
+//        rightBottomPanel = new JPanel();
+//        rightBottomPanel = new JPanel(new GridBagLayout());
+//        GridBagConstraints rbpc = new GridBagConstraints();
+////Created
+//        this.taskCreatedDate = new JLabel("Created date");
+//        rbpc.fill = GridBagConstraints.HORIZONTAL;
+//        rbpc.gridwidth = 1;
+//        rbpc.gridx = 0;
+//        rbpc.gridy = 0;
+//        rightBottomPanel.add(taskCreatedDate, rbpc);
 
 
 // Adding left, top right, bottom right panels to the main panel
@@ -187,15 +224,15 @@ public class MainView {
         c.gridy = 1;
         mainPanel.add(rightTopPanel, c);
 
-// TODO: Align bottom
-        c.insets = new Insets(5, 10, 10, 15);
-        c.gridheight = 1;
-        c.fill = GridBagConstraints.VERTICAL;
-        c.gridheight = GridBagConstraints.LINE_END;
-        c.gridx = 4;
-        c.gridy = 5;
-        mainPanel.add(rightBottomPanel, c);
-
+//// TODO: Align bottom
+//        c.insets = new Insets(5, 10, 10, 15);
+//        c.gridheight = 1;
+//        c.fill = GridBagConstraints.VERTICAL;
+//        c.gridheight = GridBagConstraints.LINE_END;
+//        c.gridx = 4;
+//        c.gridy = 5;
+//        mainPanel.add(rightBottomPanel, c);
+//
         frame.add(mainPanel);
     }
 
