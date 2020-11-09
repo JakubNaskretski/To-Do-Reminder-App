@@ -219,7 +219,6 @@ public void copyDonneTasksFromDictToJPanelDict() {
 //                        TODO: is it good idea to call it recursively?
                         RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(doneTask, tasksController);
                         rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
-//                            refreshDoneTaskList();
                         mainView.revaluateDoneList();
                     } else if (e.getButton() == MouseEvent.BUTTON1) {
                         mainView.getTaskNameLabel().setText(doneTask.getTaskName());
@@ -344,17 +343,14 @@ public void copyDonneTasksFromDictToJPanelDict() {
     public void makeTaskDone(Long taskId){
 //                      Change data for this element in DB
         tasksDBConnector.makeTaskDone(taskId);
-//                      Reread this element in dict from DB
-        Task tmpTask = tasksDBConnector.getTask(taskId);
-//                      Create doneTaskPanel
-        createDoneTasksPanel(tmpTask);
-//                      Add task to done and remove from tododict
-        tasksToDoDict.remove(taskId);
-        tasksDoneDict.put(tmpTask.getTaskId(), tmpTask);
-//                      Remove this element from tasks list - reread tasks list
         addAllToDoTasksToView();
         addAllDoneTasksToView();
+    }
 
+    public void removeTask(Long taskId){
+        tasksDBConnector.deleteTask(taskId);
+        addAllToDoTasksToView();
+        addAllDoneTasksToView();
     }
 
     public void changeTaskName(Long taskId, String newName){
