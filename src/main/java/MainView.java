@@ -176,6 +176,7 @@ public class MainView {
         rightTopPanel.add(emptyLabel2, rtpc);
 
         this.taskNoteTexrArea = new JTextArea("Task note Area", 2,6);
+        taskNoteTexrArea.setFont(new Font("arial", Font.PLAIN, 10));
         taskNoteTexrArea.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()));
         taskNoteTexrArea.setLineWrap(true);
         taskNoteTexrArea.setBackground(null);
@@ -315,4 +316,7 @@ public class MainView {
         return blockDimensions;
     }
 
+    public JFrame getFrame() {
+        return frame;
+    }
 }

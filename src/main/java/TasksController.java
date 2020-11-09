@@ -16,6 +16,9 @@ public class TasksController {
         private TasksDBConnector tasksDBConnector;
         private TasksController tasksController;
 
+        boolean noteAreaClicked = false;
+        Task currentlyChosenTask = null;
+
         private Dictionary<Long, Task> tasksToDoDict, tasksDoneDict;
         private Dictionary<Long, JPanel> tasksToDoJPanelDict, tasksDoneJPanelDict;
 
@@ -44,11 +47,27 @@ public class TasksController {
 
         t1.start();
         try {
-            t1.join(500);
+            t1.join(600);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         t2.start();
+
+//        =============
+
+//      Creates and adds listeners to labels with info about tasks
+        addLabelListeners();
+
+        mainView.getFrame().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainView.getFrame().requestFocus();
+            }
+        });
+
+
+//        ===========
+
 
 // Action listeners for add task
         MouseListener addTaskClicked = new MouseAdapter() {
@@ -161,6 +180,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
 
             JTextField tmpJTextField = new JTextField(toDoTask.getTaskName());
 
+//          Sets info about notes in view or removes task
             tmpJTextField.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -169,10 +189,8 @@ public void copyDonneTasksFromDictToJPanelDict() {
                         RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(toDoTask, tasksController);
                         rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
                     } else if (e.getButton() == MouseEvent.BUTTON1) {
-                        mainView.getTaskNameLabel().setText(toDoTask.getTaskName());
-                        mainView.getTaskImportanceLabel().setText(String.valueOf(toDoTask.getImportance()));
-                        mainView.getTaskReminderDate().setText(String.valueOf(toDoTask.getReminderDate()));
-                        mainView.getTaskNoteTexrArea().setText(toDoTask.getNote());
+                        currentlyChosenTask = toDoTask;
+                        displayLabels();
 //                            TODO: make this not change size of frame
 //                            mainView.getTaskCreatedDate().setText(String.valueOf(taskToDoInList.getCreationDate()));
                     }
@@ -212,6 +230,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
 //          Make strikethrough text
             tmpJTextField.setFont(myFont);
 
+//          Sets info about notes in view or removes task
             tmpJTextField.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -219,104 +238,25 @@ public void copyDonneTasksFromDictToJPanelDict() {
 //                        TODO: is it good idea to call it recursively?
                         RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(doneTask, tasksController);
                         rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
-                        mainView.revaluateDoneList();
                     } else if (e.getButton() == MouseEvent.BUTTON1) {
-                        mainView.getTaskNameLabel().setText(doneTask.getTaskName());
-                        mainView.getTaskImportanceLabel().setText(String.valueOf(doneTask.getImportance()));
-                        mainView.getTaskReminderDate().setText(String.valueOf(doneTask.getReminderDate()));
-                        mainView.getTaskNoteTexrArea().setText(doneTask.getNote());
+                        currentlyChosenTask = doneTask;
+                        displayLabels();
+
 //                            TODO: make this not change size of frame
 //                        mainView.getTaskCreatedDate().setText(String.valueOf(tasksDoneInList.getCreationDate()));
                     }
                 }
             });
-
-//  Task values changers
-            mainView.getTaskNameLabel().addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    if (!mainView.getTaskNameLabel().getText().equals(doneTask.getTaskName())) {
-                        tasksDBConnector.changeTaskName(doneTask.getTaskId(), mainView.getTaskNameLabel().getText());
-//                            refreshDoneTaskList();
-                        mainView.revaluateDoneList();
-                    }
-                }
-            });
-            mainView.getTaskImportanceLabel().addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-//                    TODO: Limit range of importances
-                    if (Integer.valueOf(mainView.getTaskImportanceLabel().getText()).equals(doneTask.getImportance())) {
-                        try {
-                            tasksDBConnector.changeTaskImportance(doneTask.getTaskId(), Integer.valueOf(mainView.getTaskImportanceLabel().getText()));
-//                                refreshDoneTaskList();
-                            mainView.revaluateDoneList();
-                        } catch (NumberFormatException nfe) {
-                            System.out.println("Wrong valye have been passed as an importance");
-                        }
-                    }
-                }
-            });
-//            mainView.getTaskReminderDate().addFocusListener(new FocusAdapter() {
+//
+//            mainView.getTaskNoteTexrArea().addKeyListener(new KeyAdapter() {
 //                @Override
-//                public void focusLost(FocusEvent e) {
-//                    if (!mainView.getTaskNameLabel().equals(tasksDoneInList.getTaskName())){
-//                        tasksDBConnector.changeTaskName(tasksDoneInList.getTaskId(), mainView.getTaskNameLabel().getText());
-//                        refreshDoneTasksWithoutListeners();
-//                    }
-//                }
-//            });
-//            mainView.getTaskNoteTexrArea().addFocusListener(new FocusAdapter() {
-//                @Override
-//                public void focusLost(FocusEvent e) {
-//                    if (!mainView.getTaskNoteTexrArea().getText().equals(tasksDoneInList.getNote())){
-//                        tasksDBConnector.changeTaskNote(tasksDoneInList.getTaskId(), mainView.getTaskNoteTexrArea().getText());
-//                        refreshDoneTaskList();
-//                    }
-//                }
-//            });
-//            mainView.getTaskNoteTexrArea().addPropertyChangeListener(new PropertyChangeListener() {
-//                @Override
-//                public void propertyChange(PropertyChangeEvent evt) {
-//                    if (!mainView.getTaskNoteTexrArea().getText().equals(tasksDoneInList.getNote())){
-//                        tasksDBConnector.changeTaskNote(tasksDoneInList.getTaskId(), mainView.getTaskNoteTexrArea().getText());
-//                        refreshDoneTaskList();
-//                        System.out.println("Changed");
+//                public void keyPressed(KeyEvent e) {
+//                    if (e.getKeyCode() == KeyEvent.VK_ENTER && mainView.getTaskNoteTexrArea().isEnabled()) {
+//                        updateNote(doneTask.getTaskId(), mainView.getTaskNoteTexrArea().getText());
 //                    }
 //                }
 //            });
 
-            mainView.getTaskNoteTexrArea().getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    if (!mainView.getTaskNoteTexrArea().getText().equals(doneTask.getNote())) {
-                        tasksDBConnector.changeTaskNote(doneTask.getTaskId(), mainView.getTaskNoteTexrArea().getText());
-//                            refreshDoneTaskList();
-                        mainView.revaluateDoneList();
-                        System.out.println("Changed");
-                    }
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    if (!mainView.getTaskNoteTexrArea().getText().equals(doneTask.getNote())) {
-                        tasksDBConnector.changeTaskNote(doneTask.getTaskId(), mainView.getTaskNoteTexrArea().getText());
-//                            refreshDoneTaskList();
-                        mainView.revaluateDoneList();
-                        System.out.println("Changed");
-                    }
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    if (!mainView.getTaskNoteTexrArea().getText().equals(doneTask.getNote())) {
-                        tasksDBConnector.changeTaskNote(doneTask.getTaskId(), mainView.getTaskNoteTexrArea().getText());
-//                            refreshDoneTaskList();
-                        mainView.revaluateDoneList();
-                        System.out.println("Changed");
-                    }
-                }
-            });
 
             tmpJTextField.setBorder(null);
             tmpJTextField.setEditable(false);
@@ -353,8 +293,80 @@ public void copyDonneTasksFromDictToJPanelDict() {
         addAllDoneTasksToView();
     }
 
-    public void changeTaskName(Long taskId, String newName){
-
+    public void updateNote(Long taskId, String noteText){
+        if (taskId != null) {
+            tasksDBConnector.changeTaskNote(taskId, noteText);
+            addAllToDoTasksToView();
+            addAllDoneTasksToView();
+        }
     }
+
+    public void changeTaskName(Long taskId, String newName){
+        tasksDBConnector.changeTaskName(taskId, newName);
+        addAllToDoTasksToView();
+        addAllDoneTasksToView();
+    }
+
+    public void changeTaskImportance(Long taskId, String newImportance){
+        try {
+            int tmp = Integer.valueOf(newImportance);
+            if (tmp >= 1 && tmp <= 10) {
+                tasksDBConnector.changeTaskImportance(taskId, tmp);
+                addAllToDoTasksToView();
+                addAllDoneTasksToView();
+            }
+        } catch (NumberFormatException e) {
+
+        }
+    }
+
+    public void addLabelListeners() {
+        DeferredDocumentListener noteListener = new DeferredDocumentListener(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentlyChosenTask != null) {
+                    updateNote(currentlyChosenTask.getTaskId(), mainView.getTaskNoteTexrArea().getText());
+                }
+            }
+        }, true);
+
+        mainView.getTaskNoteTexrArea().getDocument().addDocumentListener(noteListener);
+        mainView.getTaskNoteTexrArea().addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                noteListener.start();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                noteListener.stop();
+            }
+        });
+
+        mainView.getTaskNameLabel().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                changeTaskName(currentlyChosenTask.getTaskId(), mainView.getTaskNameLabel().getText());
+                mainView.getTaskNameLabel().transferFocus();
+            }
+        });
+
+        mainView.getTaskImportanceLabel().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                changeTaskImportance(currentlyChosenTask.getTaskId(), mainView.getTaskImportanceLabel().getText());
+            }
+        });
+    }
+
+        public void displayLabels(){
+            mainView.getTaskNameLabel().setText(currentlyChosenTask.getTaskName());
+            mainView.getTaskImportanceLabel().setText(String.valueOf(currentlyChosenTask.getImportance()));
+            mainView.getTaskReminderDate().setText(String.valueOf(currentlyChosenTask.getReminderDate()));
+            mainView.getTaskNoteTexrArea().setText(currentlyChosenTask.getNote());
+            addAllToDoTasksToView();
+            addAllDoneTasksToView();
+        }
+
 
 }
