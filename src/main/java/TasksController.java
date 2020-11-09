@@ -64,7 +64,7 @@ public class TasksController {
             @Override
             public void keyPressed(KeyEvent e){
                 if (e.getKeyCode() == KeyEvent.VK_ENTER && mainView.getAddTaskTextField().isEnabled()){
-                    tasksDBConnector.addTask(1, mainView.getAddTaskTextField().getText());
+                    addTask(mainView.getAddTaskTextField().getText());
                     mainView.getAddTaskTextField().setText("+Add new task");
                     mainView.getAddTaskTextField().setEditable(false);
                 }
@@ -75,7 +75,7 @@ public class TasksController {
         mainView.getAddTaskTextField().addKeyListener(addTaskEnter);
         }
 
-// Add tasks from DB to dicts
+// Add tasksToDo from DB to dict
     public void putToDoTasksToDict() {
         this.tasksToDoDict = new Hashtable<>();
         for (Task taskToDoFromDB : tasksDBConnector.getToDoTasks()) {
@@ -83,7 +83,7 @@ public class TasksController {
         }
     }
 
-// Add tasks from DB to dicts
+// Add tasks done from DB to dict
     public void putDoneTasksToDict() {
         this.tasksDoneDict = new Hashtable<>();
         for (Task taskDoneFromDB : tasksDBConnector.getDoneTasks()) {
@@ -331,21 +331,33 @@ public void copyDonneTasksFromDictToJPanelDict() {
             return tmpPanel;
         }
 
-    public void makeTaskDone(Long taskId){
 
-        //                        Change data for this element in DB
+        public void addTask(String taskName){
+//        Add task to the DB
+            tasksDBConnector.addTask(1, taskName);
+//            Clears ToDoDict and adds task there
+//            Adds all elements from dict to JPanel
+//            For each JPanel element displays it with design
+            addAllToDoTasksToView();
+        }
+
+    public void makeTaskDone(Long taskId){
+//                      Change data for this element in DB
         tasksDBConnector.makeTaskDone(taskId);
-//                        Reread this element in dict from DB
+//                      Reread this element in dict from DB
         Task tmpTask = tasksDBConnector.getTask(taskId);
-//                        Create doneTaskPanel
+//                      Create doneTaskPanel
         createDoneTasksPanel(tmpTask);
 //                      Add task to done and remove from tododict
         tasksToDoDict.remove(taskId);
         tasksDoneDict.put(tmpTask.getTaskId(), tmpTask);
-//                        Remove this element from tasks list - reread tasks list
+//                      Remove this element from tasks list - reread tasks list
         addAllToDoTasksToView();
         addAllDoneTasksToView();
-//                        Add this element in done tasks
+
+    }
+
+    public void changeTaskName(Long taskId, String newName){
 
     }
 
