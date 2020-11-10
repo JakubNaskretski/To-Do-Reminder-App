@@ -68,12 +68,44 @@ public class TasksDBConnector {
         return task;
     }
 
-    public static List<Task> getToDoTasks() {
+//    public static List<Task> getToDoTasks() {
+//        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+//
+//        // the lowercase c refers to the object
+//        // :custID is a parameterized query thats value is set below
+//        String strQuery = "SELECT t FROM Task t WHERE t.id IS NOT NULL AND t.isTaskDone = 0";
+//
+//        TypedQuery<Task> tq = em.createQuery(strQuery, Task.class);
+//        List<Task> tasks = null;
+//        try {
+//            // Get matching customer object and output
+//            tasks = tq.getResultList();
+//        }
+//        catch(NoResultException ex) {
+//            ex.printStackTrace();
+//        }
+//        finally {
+//            em.close();
+//        }
+//        return tasks;
+//    }
+
+//    Task sort by tasId, taskName, taskImportance
+//    Task type type 0 - to do, 1 - done, 2 - all
+    public static String generateGetTasksStringQuery(String sortBy, int taskType) {
+        if (taskType == 3) {
+            return "SELECT t FROM Task t WHERE t.id IS NOT NULL "+"ORDER BY "+ sortBy;
+        }
+        System.out.println("Querry string "+ "SELECT t FROM Task t WHERE t.id IS NOT NULL AND t.isTaskDone = " + taskType + " ORDER BY " + sortBy);
+        return "SELECT t FROM Task t WHERE t.id IS NOT NULL AND t.isTaskDone = " + taskType + " ORDER BY " + sortBy;
+    }
+
+    public static List<Task> getTasks(String sortBy, int taskType) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
         // the lowercase c refers to the object
         // :custID is a parameterized query thats value is set below
-        String strQuery = "SELECT t FROM Task t WHERE t.id IS NOT NULL AND t.isTaskDone = 0";
+        String strQuery = generateGetTasksStringQuery(sortBy, taskType);
 
         TypedQuery<Task> tq = em.createQuery(strQuery, Task.class);
         List<Task> tasks = null;
@@ -90,27 +122,30 @@ public class TasksDBConnector {
         return tasks;
     }
 
-    public static List<Task> getDoneTasks() {
-        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 
-        // the lowercase c refers to the object
-        // :custID is a parameterized query thats value is set below
-        String strQuery = "SELECT t FROM Task t WHERE t.id IS NOT NULL AND t.isTaskDone = 1";
 
-        TypedQuery<Task> tq = em.createQuery(strQuery, Task.class);
-        List<Task> tasks = null;
-        try {
-            // Get matching customer object and output
-            tasks = tq.getResultList();
-        }
-        catch(NoResultException ex) {
-            ex.printStackTrace();
-        }
-        finally {
-            em.close();
-        }
-        return tasks;
-    }
+
+//    public static List<Task> getDoneTasks() {
+//        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+//
+//        // the lowercase c refers to the object
+//        // :custID is a parameterized query thats value is set below
+//        String strQuery = "SELECT t FROM Task t WHERE t.id IS NOT NULL AND t.isTaskDone = 1";
+//
+//        TypedQuery<Task> tq = em.createQuery(strQuery, Task.class);
+//        List<Task> tasks = null;
+//        try {
+//            // Get matching customer object and output
+//            tasks = tq.getResultList();
+//        }
+//        catch(NoResultException ex) {
+//            ex.printStackTrace();
+//        }
+//        finally {
+//            em.close();
+//        }
+//        return tasks;
+//    }
 
     public static void changeTaskName(Long id, String taskName) {
         EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();

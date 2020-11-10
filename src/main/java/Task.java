@@ -1,5 +1,6 @@
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,12 +67,14 @@ public class Task implements Serializable {
         return importance;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public String getCreationDate() {
+        SimpleDateFormat dataFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dataFormatter.format(creationDate);
     }
 
-    public Date getReminderDate() {
-        return reminderDate;
+    public String getReminderDate() {
+        SimpleDateFormat dataFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dataFormatter.format(reminderDate);
     }
 
     public void setTaskId(Long taskId) {

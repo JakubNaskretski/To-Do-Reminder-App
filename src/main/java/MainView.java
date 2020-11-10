@@ -71,14 +71,14 @@ public class MainView {
         leftPanel = new JPanel(new GridBagLayout());
         GridBagConstraints lpc = new GridBagConstraints();
 
-        this.sortByLabel = new JLabel("Sort by ");
+        this.sortByLabel = new JLabel("Sorted by ");
         lpc.fill = GridBagConstraints.HORIZONTAL;
         lpc.gridwidth = 1;
         lpc.gridx = 0;
         lpc.gridy = 0;
         leftPanel.add(sortByLabel, lpc);
 
-        this.sortByWhat = new JLabel("Importance");
+        this.sortByWhat = new JLabel("Id");
         lpc.gridx = 1;
         leftPanel.add(sortByWhat, lpc);
 
