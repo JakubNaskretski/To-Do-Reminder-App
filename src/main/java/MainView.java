@@ -144,7 +144,7 @@ public class MainView {
         rightTopPanel.add(emptyLabel1, rtpc);
 
 
-        this.taskNameLabel = new JTextField("Name");
+        this.taskNameLabel = new JTextField("Task name");
         taskNameLabel.setBorder(null);
         taskNameLabel.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()/3));
         taskNameLabel.setBackground(null);
@@ -153,7 +153,7 @@ public class MainView {
         rtpc.gridy = 1;
         rightTopPanel.add(taskNameLabel, rtpc);
 
-        this.taskImportanceLabel = new JTextField("Importance");
+        this.taskImportanceLabel = new JTextField("How important");
         taskImportanceLabel.setBorder(null);
         taskImportanceLabel.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()/3));
         taskImportanceLabel.setBackground(null);
@@ -167,20 +167,27 @@ public class MainView {
         rtpc.gridy = 3;
         rightTopPanel.add(taskReminderDate, rtpc);
 
-        //        Empty JLabel to lower all components
-//        TODO: mby use height of sorting tag ?
-        JLabel emptyLabel2 = new JLabel(" ");
+//        //        Empty JLabel to lower all components
+////        TODO: mby use height of sorting tag ?
+//        JLabel emptyLabel2 = new JLabel(" ");
+//        rtpc.fill = GridBagConstraints.HORIZONTAL;
+//        rtpc.gridwidth = 1;
+//        rtpc.gridy = 4;
+//        rightTopPanel.add(emptyLabel2, rtpc);
+
+        JLabel noteInfo = new JLabel(" ");
         rtpc.fill = GridBagConstraints.HORIZONTAL;
         rtpc.gridwidth = 1;
-        rtpc.gridy = 4;
-        rightTopPanel.add(emptyLabel2, rtpc);
+        rtpc.gridy = 5;
+        rightTopPanel.add(noteInfo, rtpc);
 
-        this.taskNoteTexrArea = new JTextArea("Task note Area", 2,6);
-        taskNoteTexrArea.setFont(new Font("arial", Font.PLAIN, 10));
+        this.taskNoteTexrArea = new JTextArea("Note for task", 2,6);
+        taskNoteTexrArea.setFont(new Font("arial", Font.PLAIN, 11));
         taskNoteTexrArea.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()));
+        taskNoteTexrArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         taskNoteTexrArea.setLineWrap(true);
         taskNoteTexrArea.setBackground(null);
-        rtpc.gridy = 5;
+        rtpc.gridy = 6;
         rightTopPanel.add(taskNoteTexrArea, rtpc);
 
         //        Empty JLabel to lower all components
@@ -188,11 +195,18 @@ public class MainView {
         JLabel emptyLabel3 = new JLabel(" ");
         rtpc.fill = GridBagConstraints.HORIZONTAL;
         rtpc.gridwidth = 1;
-        rtpc.gridy = 6;
+        rtpc.gridy = 7;
         rightTopPanel.add(emptyLabel3, rtpc);
 
-        this.taskCreatedDate = new JLabel("Created date");
-        rtpc.gridy = 7;
+        JLabel createdInfo = new JLabel("Task created: ");
+        rtpc.fill = GridBagConstraints.HORIZONTAL;
+        rtpc.gridwidth = 1;
+        rtpc.gridy = 8;
+        rightTopPanel.add(createdInfo, rtpc);
+
+
+        this.taskCreatedDate = new JLabel("date");
+        rtpc.gridy = 9;
         rightTopPanel.add(taskCreatedDate, rtpc);
 
 

@@ -364,6 +364,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
             mainView.getTaskImportanceLabel().setText(String.valueOf(currentlyChosenTask.getImportance()));
             mainView.getTaskReminderDate().setText(String.valueOf(currentlyChosenTask.getReminderDate()));
             mainView.getTaskNoteTexrArea().setText(currentlyChosenTask.getNote());
+            mainView.getTaskCreatedDate().setText(String.valueOf(currentlyChosenTask.getCreationDate()));
             addAllToDoTasksToView();
             addAllDoneTasksToView();
         }
