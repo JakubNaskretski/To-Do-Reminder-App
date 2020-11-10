@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TasksController {
@@ -13,6 +14,7 @@ public class TasksController {
         boolean noteAreaClicked = false;
         Task currentlyChosenTask = null;
         String sorByWhat = "taskId";
+        SimpleDateFormat dataFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         private LinkedHashMap<Long, Task> tasksToDoDict, tasksDoneDict;
         private LinkedHashMap<Long, JPanel> tasksToDoJPanelDict, tasksDoneJPanelDict;
@@ -156,6 +158,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
             tmpPanel.setLayout(gridBagLayout);
 
             JCheckBox tmpCheckBox = new JCheckBox();
+            tmpCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 // If checkbox marked calls makeTaskDone
             tmpCheckBox.addActionListener(new ActionListener() {
@@ -176,6 +179,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
             tmpPanel.add(tmpCheckBox, c);
 
             JTextField tmpJTextField = new JTextField(toDoTask.getTaskName());
+            tmpJTextField.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 //          Sets info about notes in view or removes task
             tmpJTextField.addMouseListener(new MouseAdapter() {
@@ -223,6 +227,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
             tmpPanel.setLayout(gridBagLayout);
 
             JTextField tmpJTextField = new JTextField(doneTask.getTaskName());
+            tmpJTextField.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 //          Make strikethrough text
             tmpJTextField.setFont(myFont);
@@ -297,7 +302,8 @@ public void copyDonneTasksFromDictToJPanelDict() {
 
     public void changeTaskImportance(Long taskId, String newImportance){
         try {
-            int tmp = Integer.valueOf(newImportance);
+            int tmp = 0;
+            tmp = Integer.valueOf(newImportance);
             if (tmp >= 1 && tmp <= 10) {
                 tasksDBConnector.changeTaskImportance(taskId, tmp);
                 addAllToDoTasksToView(sorByWhat, 0);
@@ -331,6 +337,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
             }
         });
 
+
         mainView.getSortByWhat().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -343,25 +350,42 @@ public void copyDonneTasksFromDictToJPanelDict() {
         mainView.getTaskNameLabel().addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                changeTaskName(currentlyChosenTask.getTaskId(), mainView.getTaskNameLabel().getText());
-                mainView.getTaskNameLabel().transferFocus();
+                if (currentlyChosenTask.getTaskId() != null) {
+                    changeTaskName(currentlyChosenTask.getTaskId(), mainView.getTaskNameLabel().getText());
+                    mainView.getTaskNameLabel().transferFocus();
+                }
             }
         });
 
         mainView.getTaskImportanceLabel().addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                changeTaskImportance(currentlyChosenTask.getTaskId(), mainView.getTaskImportanceLabel().getText());
+                if (currentlyChosenTask.getTaskId() != null) {
+                    changeTaskImportance(currentlyChosenTask.getTaskId(), mainView.getTaskImportanceLabel().getText());
+                }
+            }
+        });
+
+//        TODO: add working calendar
+        mainView.getTaskReminderDate().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    new DatePicker();
+                    DatePickerClickMenu datePickerClickMenu = new DatePickerClickMenu();
+                    datePickerClickMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
             }
         });
     }
+
 
         public void displayLabels(){
             mainView.getTaskNameLabel().setText(currentlyChosenTask.getTaskName());
             mainView.getTaskImportanceLabel().setText(String.valueOf(currentlyChosenTask.getImportance()));
             mainView.getTaskReminderDate().setText(String.valueOf(currentlyChosenTask.getReminderDate()));
             mainView.getTaskNoteTexrArea().setText(currentlyChosenTask.getNote());
-            mainView.getTaskCreatedDate().setText(String.valueOf(currentlyChosenTask.getCreationDate()));
+            mainView.getTaskCreatedDate().setText(dataFormatter.format(currentlyChosenTask.getCreationDate()));
             addAllToDoTasksToView(sorByWhat, 0);
             addAllDoneTasksToView(sorByWhat, 1);
         }
@@ -390,4 +414,9 @@ public void copyDonneTasksFromDictToJPanelDict() {
         }
 
 
+    public void undoneTask(Long taskId) {
+        tasksDBConnector.undoneTask(taskId);
+        addAllToDoTasksToView(sorByWhat, 0);
+        addAllDoneTasksToView(sorByWhat, 1);
+    }
 }

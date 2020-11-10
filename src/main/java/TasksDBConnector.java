@@ -295,4 +295,33 @@ public class TasksDBConnector {
         ENTITY_MANAGER_FACTORY.close();
     }
 
+    public void undoneTask(Long taskId) {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+
+        Task task = null;
+
+        try {
+            // Get transaction and start
+            et = em.getTransaction();
+            et.begin();
+
+            // Find customer and make changes
+            task = em.find(Task.class, taskId);
+            task.setIsTaskDone(0);
+
+            // Save the customer object
+            em.persist(task);
+            et.commit();
+        } catch (Exception ex) {
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+    }
 }

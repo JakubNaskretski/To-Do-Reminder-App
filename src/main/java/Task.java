@@ -67,14 +67,14 @@ public class Task implements Serializable {
         return importance;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         SimpleDateFormat dataFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return dataFormatter.format(creationDate);
+        return creationDate;
     }
 
-    public String getReminderDate() {
+    public Date getReminderDate() {
         SimpleDateFormat dataFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return dataFormatter.format(reminderDate);
+        return reminderDate;
     }
 
     public void setTaskId(Long taskId) {

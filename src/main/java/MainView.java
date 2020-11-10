@@ -79,6 +79,7 @@ public class MainView {
         leftPanel.add(sortByLabel, lpc);
 
         this.sortByWhat = new JLabel("Id");
+        sortByWhat.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         lpc.gridx = 1;
         leftPanel.add(sortByWhat, lpc);
 
@@ -125,6 +126,7 @@ public class MainView {
         this.addTaskTextField = new JTextField("+ Add new task");
         addTaskTextField.setPreferredSize(blockDimensions);
         addTaskTextField.setEditable(false);
+        addTaskTextField.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         lpc.insets = new Insets(10, 0, 10, 0);
         lpc.gridy = 4;
         leftPanel.add(addTaskTextField, lpc);
@@ -162,6 +164,8 @@ public class MainView {
 
         this.taskReminderDate = new JTextField("Reminder date");
         taskReminderDate.setBorder(null);
+        taskReminderDate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        taskReminderDate.setEditable(false);
         taskReminderDate.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()/3));
         taskReminderDate.setBackground(null);
         rtpc.gridy = 3;
