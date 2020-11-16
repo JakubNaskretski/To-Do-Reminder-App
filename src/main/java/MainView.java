@@ -1,3 +1,5 @@
+import org.jdatepicker.impl.JDatePickerImpl;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -17,8 +19,10 @@ public class MainView {
 
     private JLabel appTittleLabel, sortByLabel, sortByWhat, doneLabel,taskCreatedDate;
     private List<JPanel> tasksToDoJPanelsList, tasksDoneJPanelsList;
-    private JTextField addTaskTextField, taskNameLabel, taskImportanceLabel, taskReminderDate;
+    private JTextField addTaskTextField, taskNameLabel, taskImportanceLabel;
     private JTextArea taskNoteTexrArea;
+
+    private JDatePickerImpl taskReminderDate;
 
     public MainView() {
 
@@ -162,22 +166,9 @@ public class MainView {
         rtpc.gridy = 2;
         rightTopPanel.add(taskImportanceLabel, rtpc);
 
-        this.taskReminderDate = new JTextField("Reminder date");
-        taskReminderDate.setBorder(null);
-        taskReminderDate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        taskReminderDate.setEditable(false);
-        taskReminderDate.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()/3));
-        taskReminderDate.setBackground(null);
+        this.taskReminderDate = new DatePickerChooser().createDatePicker();
         rtpc.gridy = 3;
         rightTopPanel.add(taskReminderDate, rtpc);
-
-//        //        Empty JLabel to lower all components
-////        TODO: mby use height of sorting tag ?
-//        JLabel emptyLabel2 = new JLabel(" ");
-//        rtpc.fill = GridBagConstraints.HORIZONTAL;
-//        rtpc.gridwidth = 1;
-//        rtpc.gridy = 4;
-//        rightTopPanel.add(emptyLabel2, rtpc);
 
         JLabel noteInfo = new JLabel(" ");
         rtpc.fill = GridBagConstraints.HORIZONTAL;
@@ -310,10 +301,6 @@ public class MainView {
         return taskImportanceLabel;
     }
 
-    public JTextField getTaskReminderDate() {
-        return taskReminderDate;
-    }
-
     public JLabel getTaskCreatedDate() {
         return taskCreatedDate;
     }
@@ -336,5 +323,9 @@ public class MainView {
 
     public JFrame getFrame() {
         return frame;
+    }
+
+    public JDatePickerImpl getTaskReminderDate() {
+        return taskReminderDate;
     }
 }

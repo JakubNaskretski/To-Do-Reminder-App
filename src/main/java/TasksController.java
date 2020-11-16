@@ -1,9 +1,12 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 public class TasksController {
 
@@ -366,24 +369,32 @@ public void copyDonneTasksFromDictToJPanelDict() {
             }
         });
 
-//        TODO: add working calendar
-        mainView.getTaskReminderDate().addMouseListener(new MouseAdapter() {
+        mainView.getTaskReminderDate().getModel().addChangeListener(new ChangeListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
-//                    new DatePicker();
-                    DatePickerClickMenu datePickerClickMenu = new DatePickerClickMenu(currentlyChosenTask, tasksController);
-                    datePickerClickMenu.show(e.getComponent(), e.getX(), e.getY());
-                }
+            public void stateChanged(ChangeEvent e) {
+
+                    Date date = (Date) mainView.getTaskReminderDate().getModel().getValue();
+                    System.out.println(date);
+                    changeReminderDate(currentlyChosenTask.getTaskId(), date);
+
+//                    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//
+//
+//                    System.out.println(date);
+//                    System.out.println(date);
+
             }
         });
+
     }
 
 
         public void displayLabels(){
             mainView.getTaskNameLabel().setText(currentlyChosenTask.getTaskName());
             mainView.getTaskImportanceLabel().setText(String.valueOf(currentlyChosenTask.getImportance()));
-            mainView.getTaskReminderDate().setText(String.valueOf(currentlyChosenTask.getReminderDate()));
+//            if (currentlyChosenTask.getReminderDate() != null) {
+//                mainView.getTaskReminderDate().getModel().setValue(currentlyChosenTask.getReminderDate());
+//            }
             mainView.getTaskNoteTexrArea().setText(currentlyChosenTask.getNote());
             mainView.getTaskCreatedDate().setText(dataFormatter.format(currentlyChosenTask.getCreationDate()));
             addAllToDoTasksToView(sorByWhat, 0);
@@ -430,4 +441,5 @@ public void copyDonneTasksFromDictToJPanelDict() {
     public MainView getMainView() {
         return mainView;
     }
+
 }

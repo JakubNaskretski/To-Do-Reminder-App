@@ -8,16 +8,12 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.Properties;
 
-public class DatePickerClickMenu extends JPopupMenu {
+public class DatePickerChooser {
 
     private JDatePickerImpl datePicker;
 
-    public DatePickerClickMenu(Task task, TasksController tasksController) {
+    public DatePickerChooser() {
         this.datePicker = createDatePicker();
-        add(datePicker);
-        System.out.println(datePicker.getModel().getValue());
-//        tasksController.getMainView().getTaskReminderDate().setText(datePicker.getModel().getValue());
-//        tasksController.changeReminderDate(task.getTaskId(), datePicker.getModel().getDay());
     }
 
     public JDatePickerImpl createDatePicker(){

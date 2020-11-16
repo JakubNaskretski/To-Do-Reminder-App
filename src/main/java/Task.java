@@ -2,6 +2,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -72,9 +73,10 @@ public class Task implements Serializable {
         return creationDate;
     }
 
-    public Date getReminderDate() {
-        SimpleDateFormat dataFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return reminderDate;
+    public Collection<?> getReminderDate() {
+        SimpleDateFormat dataFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        Collection<?> c = new ArrayList<Date>((Collection<? extends Date>) reminderDate);
+        return c;
     }
 
     public void setTaskId(Long taskId) {
