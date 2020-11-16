@@ -324,4 +324,35 @@ public class TasksDBConnector {
             em.close();
         }
     }
+
+    public void changeReminderDate(Long taskId, Date reminderDate) {
+        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction et = null;
+
+        Task task = null;
+
+        try {
+            // Get transaction and start
+            et = em.getTransaction();
+            et.begin();
+
+            // Find customer and make changes
+            task = em.find(Task.class, taskId);
+            task.setReminderDate(reminderDate);
+
+            // Save the customer object
+            em.persist(task);
+            et.commit();
+        } catch (Exception ex) {
+            // If there is an exception rollback changes
+            if (et != null) {
+                et.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            // Close EntityManager
+            em.close();
+        }
+    }
+
 }

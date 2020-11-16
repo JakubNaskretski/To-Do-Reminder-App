@@ -371,8 +371,8 @@ public void copyDonneTasksFromDictToJPanelDict() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    new DatePicker();
-                    DatePickerClickMenu datePickerClickMenu = new DatePickerClickMenu();
+//                    new DatePicker();
+                    DatePickerClickMenu datePickerClickMenu = new DatePickerClickMenu(currentlyChosenTask, tasksController);
                     datePickerClickMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
             }
@@ -386,6 +386,12 @@ public void copyDonneTasksFromDictToJPanelDict() {
             mainView.getTaskReminderDate().setText(String.valueOf(currentlyChosenTask.getReminderDate()));
             mainView.getTaskNoteTexrArea().setText(currentlyChosenTask.getNote());
             mainView.getTaskCreatedDate().setText(dataFormatter.format(currentlyChosenTask.getCreationDate()));
+            addAllToDoTasksToView(sorByWhat, 0);
+            addAllDoneTasksToView(sorByWhat, 1);
+        }
+
+        public void changeReminderDate(Long taskId, Date reminderDate){
+            tasksDBConnector.changeReminderDate(taskId, reminderDate);
             addAllToDoTasksToView(sorByWhat, 0);
             addAllDoneTasksToView(sorByWhat, 1);
         }
@@ -418,5 +424,10 @@ public void copyDonneTasksFromDictToJPanelDict() {
         tasksDBConnector.undoneTask(taskId);
         addAllToDoTasksToView(sorByWhat, 0);
         addAllDoneTasksToView(sorByWhat, 1);
+    }
+
+
+    public MainView getMainView() {
+        return mainView;
     }
 }

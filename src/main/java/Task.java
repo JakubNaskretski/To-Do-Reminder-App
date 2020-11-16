@@ -113,5 +113,7 @@ public class Task implements Serializable {
         this.isTaskDone = isTaskDone;
     }
 
-
+    public void setReminderDate(Date reminderDate) {
+        this.reminderDate = reminderDate;
+    }
 }
