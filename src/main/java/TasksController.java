@@ -1,12 +1,9 @@
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 
 public class TasksController {
 
@@ -369,23 +366,12 @@ public void copyDonneTasksFromDictToJPanelDict() {
             }
         });
 
-        mainView.getTaskReminderDate().getModel().addChangeListener(new ChangeListener() {
+        mainView.getTaskReminderDate().addMouseListener(new MouseAdapter() {
             @Override
-            public void stateChanged(ChangeEvent e) {
-
-                    Date date = (Date) mainView.getTaskReminderDate().getModel().getValue();
-                    System.out.println(date);
-                    changeReminderDate(currentlyChosenTask.getTaskId(), date);
-
-//                    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-//
-//
-//                    System.out.println(date);
-//                    System.out.println(date);
-
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
             }
         });
-
     }
 
 

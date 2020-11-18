@@ -1,5 +1,3 @@
-import org.jdatepicker.impl.JDatePickerImpl;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -22,7 +20,7 @@ public class MainView {
     private JTextField addTaskTextField, taskNameLabel, taskImportanceLabel;
     private JTextArea taskNoteTexrArea;
 
-    private JDatePickerImpl taskReminderDate;
+    private JLabel taskReminderDate;
 
     public MainView() {
 
@@ -166,7 +164,7 @@ public class MainView {
         rtpc.gridy = 2;
         rightTopPanel.add(taskImportanceLabel, rtpc);
 
-        this.taskReminderDate = new DatePickerChooser().createDatePicker();
+        this.taskReminderDate = new JLabel("Reminder date");
         rtpc.gridy = 3;
         rightTopPanel.add(taskReminderDate, rtpc);
 
@@ -325,7 +323,7 @@ public class MainView {
         return frame;
     }
 
-    public JDatePickerImpl getTaskReminderDate() {
+    public JLabel getTaskReminderDate() {
         return taskReminderDate;
     }
 }

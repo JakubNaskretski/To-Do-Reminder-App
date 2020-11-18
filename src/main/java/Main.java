@@ -1,8 +1,4 @@
-import javax.persistence.*;
 import javax.swing.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 public class Main {
 
