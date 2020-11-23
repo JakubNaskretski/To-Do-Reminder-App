@@ -32,10 +32,12 @@ public class TasksController {
         this.tasksDoneJPanelDict = new LinkedHashMap<>();
 
 
+//      Creates thread for MainView()
         Thread t1 = new Thread(() -> {
             mainView = new MainView();
             });
 
+//      Creates thread for db connector
         Thread t2 = new Thread(() -> {
             if (tasksDBConnector.getTasks("taskId", 0) != null) {
                 addAllToDoTasksToView(sorByWhat, 0);
@@ -45,6 +47,8 @@ public class TasksController {
             }
         });
 
+
+//      Start MainView thread and makes it wait until db connector is established
         t1.start();
         try {
             t1.join(900);
@@ -69,7 +73,7 @@ public class TasksController {
 //        ===========
 
 
-// Action listeners for add task
+// Declares action listeners for add task button
         MouseListener addTaskClicked = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -89,45 +93,38 @@ public class TasksController {
                 }
             }
         };
+
 // Add action listeners for add task
         mainView.getAddTaskTextField().addMouseListener(addTaskClicked);
         mainView.getAddTaskTextField().addKeyListener(addTaskEnter);
         }
 
-// Add tasksToDo from DB to dict
+// Loads tasksToDo from DB to dict
     public void putToDoTasksToDict(String sortBy, int taskType) {
         this.tasksToDoDict = new LinkedHashMap<>();
-        for (Task taskToDoFromDB : tasksDBConnector.getTasks(sortBy, taskType)) {
-//            System.out.println("task id :"+taskToDoFromDB.getTaskId());
+        for (Task taskToDoFromDB : tasksDBConnector.getTasks(sortBy, taskType))
             tasksToDoDict.put(taskToDoFromDB.getTaskId(), taskToDoFromDB);
-        }
     }
 
-// Add tasks done from DB to dict
+//  Loads tasks done from DB to dict
     public void putDoneTasksToDict(String sortBy, int taskType) {
         this.tasksDoneDict = new LinkedHashMap<>();
-        for (Task taskDoneFromDB : tasksDBConnector.getTasks(sortBy, taskType)) {
+        for (Task taskDoneFromDB : tasksDBConnector.getTasks(sortBy, taskType))
             tasksDoneDict.put(taskDoneFromDB.getTaskId(), taskDoneFromDB);
-        }
     }
 
-//    Copies all elements from ToDoTasksDict to JPanel Dict
-public void copyToDoTasksFromDictToJPanelDict() {
-    this.tasksToDoJPanelDict = new LinkedHashMap<>();
-    for (Map.Entry<Long, Task> toDoTask : tasksToDoDict.entrySet())
-//    for (Enumeration i = tasksToDoDict.elements(); i.hasMoreElements();) {
-//        com.Task tmp = (com.Task) i.nextElement();
-//        System.out.println("task id :"+tmp.getTaskId());
-        tasksToDoJPanelDict.put(toDoTask.getKey(), createToDoTaskPanel(toDoTask.getValue()));
+//  Copies all elements from ToDoTasksDict to JPanel Dict
+    public void copyToDoTasksFromDictToJPanelDict() {
+        this.tasksToDoJPanelDict = new LinkedHashMap<>();
+        for (Map.Entry<Long, Task> toDoTask : tasksToDoDict.entrySet())
+            tasksToDoJPanelDict.put(toDoTask.getKey(), createToDoTaskPanel(toDoTask.getValue()));
     }
 
-//    Copies all elements from DoneTasksDict to JPanel Dict
-public void copyDonneTasksFromDictToJPanelDict() {
-    this.tasksDoneJPanelDict = new LinkedHashMap<>();
-    for (Map.Entry<Long, Task> doneTask : tasksDoneDict.entrySet())
-//    for (Enumeration i = tasksDoneDict.elements(); i.hasMoreElements();) {
-//        com.Task tmp = (com.Task) i.nextElement();
-        tasksDoneJPanelDict.put(doneTask.getKey(), createDoneTasksPanel(doneTask.getValue()));
+//  Copies all elements from DoneTasksDict to JPanel Dict
+    public void copyDoneTasksFromDictToJPanelDict() {
+        this.tasksDoneJPanelDict = new LinkedHashMap<>();
+        for (Map.Entry<Long, Task> doneTask : tasksDoneDict.entrySet())
+            tasksDoneJPanelDict.put(doneTask.getKey(), createDoneTasksPanel(doneTask.getValue()));
     }
 
 
@@ -144,7 +141,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
 
     public void addAllDoneTasksToView(String sortBy, int taskType) {
         putDoneTasksToDict(sortBy, taskType);
-        copyDonneTasksFromDictToJPanelDict();
+        copyDoneTasksFromDictToJPanelDict();
         mainView.getTasksDoneJPanelsList().clear();
         for (Map.Entry<Long, JPanel> jpanelDoneTask : tasksDoneJPanelDict.entrySet()){
             mainView.getTasksDoneJPanelsList().add(jpanelDoneTask.getValue());
@@ -152,6 +149,8 @@ public void copyDonneTasksFromDictToJPanelDict() {
         mainView.revaluateDoneList();
     }
 
+//  Creates layout for tasks panel
+//  with style formatting and listeners
     public JPanel createToDoTaskPanel(Task toDoTask){
 
             GridBagLayout gridBagLayout = new GridBagLayout();
@@ -189,14 +188,11 @@ public void copyDonneTasksFromDictToJPanelDict() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON3) {
-//                            TODO: is it good idea to call it recursively?
                         RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(toDoTask, tasksController);
                         rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
                     } else if (e.getButton() == MouseEvent.BUTTON1) {
                         currentlyChosenTask = toDoTask;
                         displayLabels();
-//                            TODO: make this not change size of frame
-//                            mainView.getTaskCreatedDate().setText(String.valueOf(taskToDoInList.getCreationDate()));
                     }
                 }
             });
@@ -213,11 +209,13 @@ public void copyDonneTasksFromDictToJPanelDict() {
             return tmpPanel;
         }
 
-        public JPanel createDoneTasksPanel(Task doneTask){
-// Downloads DoneTasks from DB via connector, sets layout checkbox and text, adds task to tasksList to display them
-//        Clears list of tasks so there will be no duplicates
 
-//        Creates custom font type for Strikethrough text
+//  Creates layout for tasks panel
+//  with style formatting and listeners
+    public JPanel createDoneTasksPanel(Task doneTask){
+//      Downloads DoneTasks from DB via connector, sets layout checkbox and text, adds task to tasksList to display them
+
+//      Creates custom font type for Strikethrough text
         Font font = new Font("arial", Font.PLAIN, 12);
         Map fontAttr = font.getAttributes();
         fontAttr.put (TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
@@ -246,9 +244,6 @@ public void copyDonneTasksFromDictToJPanelDict() {
                     } else if (e.getButton() == MouseEvent.BUTTON1) {
                         currentlyChosenTask = doneTask;
                         displayLabels();
-
-//                            TODO: make this not change size of frame
-//                        mainView.getTaskCreatedDate().setText(String.valueOf(tasksDoneInList.getCreationDate()));
                     }
                 }
             });
@@ -267,28 +262,30 @@ public void copyDonneTasksFromDictToJPanelDict() {
         }
 
 
-        public void addTask(String taskName){
-//        Add task to the DB
-            tasksDBConnector.addTask(1, taskName);
-//            Clears ToDoDict and adds task there
-//            Adds all elements from dict to JPanel
-//            For each JPanel element displays it with design
-            addAllToDoTasksToView(sorByWhat, 0);
-        }
+    public void addTask(String taskName){
+//      Add task to the DB and in the  view
+        tasksDBConnector.addTask(1, taskName);
+//      Clears ToDoDict and adds task there
+//      Adds all elements from dict to JPanel
+//      For each JPanel element displays it with design
+        addAllToDoTasksToView(sorByWhat, 0);
+    }
 
+//  Marks taskId element as done in DB and in the  view
     public void makeTaskDone(Long taskId){
-//                      Change data for this element in DB
         tasksDBConnector.makeTaskDone(taskId);
         addAllToDoTasksToView(sorByWhat, 0);
         addAllDoneTasksToView(sorByWhat, 1);
     }
 
+//  Removes taskId element from DB and in the  view
     public void removeTask(Long taskId){
         tasksDBConnector.deleteTask(taskId);
         addAllToDoTasksToView(sorByWhat, 0);
         addAllDoneTasksToView(sorByWhat, 1);
     }
 
+//  Updates taskId element note in DB and in the view
     public void updateNote(Long taskId, String noteText){
         if (taskId != null) {
             tasksDBConnector.changeTaskNote(taskId, noteText);
@@ -297,12 +294,14 @@ public void copyDonneTasksFromDictToJPanelDict() {
         }
     }
 
+//  Changes taskId element name in DB and in the view
     public void changeTaskName(Long taskId, String newName){
         tasksDBConnector.changeTaskName(taskId, newName);
         addAllToDoTasksToView(sorByWhat, 0);
         addAllDoneTasksToView(sorByWhat, 1);
     }
 
+//  Changes taskId element importance level in DB and in the view
     public void changeTaskImportance(Long taskId, String newImportance){
         try {
             int tmp = 0;
@@ -317,6 +316,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
         }
     }
 
+//  Changes taskId element reminder date in DB and in the view
     public void changeTaskReminderDate(String date){
         try {
             Date tmpDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
@@ -333,7 +333,9 @@ public void copyDonneTasksFromDictToJPanelDict() {
 
     }
 
+//  Adds listeners to the view labels
     public void addLabelsListeners() {
+
         DeferredDocumentListener noteListener = new DeferredDocumentListener(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -342,6 +344,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
                 }
             }
         }, true);
+
 
         mainView.getTaskNoteTexrArea().getDocument().addDocumentListener(noteListener);
         mainView.getTaskNoteTexrArea().addFocusListener(new FocusListener() {
@@ -365,6 +368,7 @@ public void copyDonneTasksFromDictToJPanelDict() {
                     }
             }
         });
+
 
         mainView.getTaskNameLabel().addFocusListener(new FocusAdapter() {
             @Override
@@ -392,7 +396,6 @@ public void copyDonneTasksFromDictToJPanelDict() {
                     new DatePicker(tasksController);
 
 //                mainView.getTaskReminderDate().setText(currentlyChosenTask.getReminderDate());
-                displayLabels();
             }
         });
     }

@@ -150,7 +150,7 @@ public class MainView {
         rightTopPanel.add(emptyLabel1, rtpc);
 
 
-        this.taskNameLabel = new JTextField("com.Task name");
+        this.taskNameLabel = new JTextField("Task name");
         taskNameLabel.setBorder(null);
         taskNameLabel.setPreferredSize(new Dimension(frame.getWidth()/3, (int)tasksBlockDimensions.getHeight()/3));
         taskNameLabel.setBackground(null);
