@@ -11,7 +11,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Define the object that should be persisted in the database -->
-        <class>Task</class>
+        <class>com.Task</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <!-- Driver for DB database -->
