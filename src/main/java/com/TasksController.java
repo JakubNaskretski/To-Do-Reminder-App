@@ -188,7 +188,7 @@ public class TasksController {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON3) {
-                        RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(toDoTask, tasksController);
+                        RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(toDoTask, tasksController, 0);
                         rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
                     } else if (e.getButton() == MouseEvent.BUTTON1) {
                         currentlyChosenTask = toDoTask;
@@ -238,8 +238,7 @@ public class TasksController {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON3) {
-//                        TODO: is it good idea to call it recursively?
-                        RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(doneTask, tasksController);
+                        RightClickMouseMenu rightClickMouseMenu = new RightClickMouseMenu(doneTask, tasksController, 1);
                         rightClickMouseMenu.show(e.getComponent(), e.getX(), e.getY());
                     } else if (e.getButton() == MouseEvent.BUTTON1) {
                         currentlyChosenTask = doneTask;

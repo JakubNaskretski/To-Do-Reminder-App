@@ -193,7 +193,7 @@ public class MainView {
         rtpc.gridy = 7;
         rightTopPanel.add(emptyLabel3, rtpc);
 
-        JLabel createdInfo = new JLabel("com.Task created: ");
+        JLabel createdInfo = new JLabel("Task created: ");
         rtpc.fill = GridBagConstraints.HORIZONTAL;
         rtpc.gridwidth = 1;
         rtpc.gridy = 8;
