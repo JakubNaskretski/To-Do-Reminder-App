@@ -5,7 +5,7 @@ Application which may be usefull during track of your work to do.
 Application is written in java using swing library, hibernate and MySQL database.
 
 ## Usage
-Main objects in applications are tasks.
+Main objects in application are tasks.
 They can be either done or market as todo.
 
 Each task consists of:
