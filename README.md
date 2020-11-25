@@ -21,7 +21,7 @@ After creating new task, instance is created in database which defaultly has imp
 
 ![There should be screen shoot from the app](/Design/Screenshoots/ToDo2.png)
 
-Newly created object is being placed in to do window.
+Newly created object is being placed in the todo window.
 
 ![There should be screen shoot from the app](/Design/Screenshoots/ToDo3.png)
 
