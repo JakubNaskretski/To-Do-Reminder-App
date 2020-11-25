@@ -404,8 +404,12 @@ public class TasksController {
             mainView.getTaskNameLabel().setText(currentlyChosenTask.getTaskName());
             mainView.getTaskImportanceLabel().setText(String.valueOf(currentlyChosenTask.getImportance()));
 //            if (currentlyChosenTask.getReminderDate() != null) {
+            try {
             mainView.getTaskReminderDate().setText(currentlyChosenTask.getReminderDate());
-//            }
+            } catch (NullPointerException ex) {
+                System.out.println("Reminder date is not set");
+                ex.printStackTrace();
+            }
             mainView.getTaskNoteTexrArea().setText(currentlyChosenTask.getNote());
             mainView.getTaskCreatedDate().setText(dataFormatter.format(currentlyChosenTask.getCreationDate()));
             addAllToDoTasksToView(sorByWhat, 0);
