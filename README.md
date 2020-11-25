@@ -19,7 +19,7 @@ Each task consists of:
   
 After creating new task, instance is created in database which defaultly has importance of the task (set to 1), task id and creation date.
 
-![There shuld be screen shoot from the app](src/main/resources/Screenshoots/ToDo2.png)
+![There shuld be screen shoot from the app](/src/main/resources/Screenshoots/ToDo2.png)
 
 Newly created object is being placed in to do window.
 
