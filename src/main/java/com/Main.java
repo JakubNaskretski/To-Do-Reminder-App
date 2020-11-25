@@ -1,8 +1,6 @@
-import javax.persistence.*;
+package com;
+
 import javax.swing.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 public class Main {
 
@@ -25,17 +23,4 @@ public class Main {
 
         new TasksController();
     }
-
-
-//        addTask( 1, "testTask1");
-//        addTask(1, "testTask2");
-//        addTask(1, "testTask3");
-//
-////        getTask(1L);
-////        getTask(2L);
-////        getTask(3L);
-//
-//        getTasks();
-
-
-    }
+}

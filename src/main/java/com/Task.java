@@ -1,8 +1,10 @@
+package com;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "tasks")
@@ -10,7 +12,7 @@ public class Task implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-// Task class
+// com.Task class
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +34,9 @@ public class Task implements Serializable {
     @Column(name = "taskImportance", nullable = false)
     private int importance;
 
+    @Column(name = "isTaskDone", nullable = false)
+    private int isTaskDone;
+
     public Task() {
     }
 
@@ -39,18 +44,19 @@ public class Task implements Serializable {
         this.creationDate = new Date();
         this.importance = importance;
         this.taskName = taskName;
+        this.isTaskDone = 0;
     }
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "com.Task{" +
                 "taskId=" + taskId +
+                ", taskName='" + taskName + '\'' +
+                ", note='" + note + '\'' +
                 ", creationDate=" + creationDate +
                 ", reminderDate=" + reminderDate +
-                ", taskId=" + taskId +
                 ", importance=" + importance +
-                ", note='" + note + '\'' +
-                ", taskName='" + taskName + '\'' +
+                ", isTaskDone=" + isTaskDone +
                 '}';
     }
 
@@ -63,11 +69,14 @@ public class Task implements Serializable {
     }
 
     public Date getCreationDate() {
+        SimpleDateFormat dataFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return creationDate;
     }
 
-    public Date getReminderDate() {
-        return reminderDate;
+    public String getReminderDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(reminderDate);
+        return strDate;
     }
 
     public void setTaskId(Long taskId) {
@@ -76,6 +85,10 @@ public class Task implements Serializable {
 
     public String getNote() {
         return note;
+    }
+
+    public int getIsTaskDone() {
+        return isTaskDone;
     }
 
     public String getTaskName() {
@@ -98,4 +111,11 @@ public class Task implements Serializable {
         this.taskName = taskName;
     }
 
+    public void setIsTaskDone(int isTaskDone) {
+        this.isTaskDone = isTaskDone;
+    }
+
+    public void setReminderDate(Date reminderDate) {
+        this.reminderDate = reminderDate;
+    }
 }
