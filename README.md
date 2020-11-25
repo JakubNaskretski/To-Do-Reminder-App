@@ -8,7 +8,7 @@ Application is written in java using swing library, hibernate and MySQL database
 Main objects in application are tasks.
 They can be either done or market as todo.
 
-![There shuld be screen shoot from the app](/screenshoots/ToDo1.png)
+![There shuld be screen shoot from the app](Screenshoots/ToDo1.png)
 
 Each task consists of:
   - name
@@ -19,7 +19,7 @@ Each task consists of:
   
 After creating new task, instance is created in database which defaultly has importance of the task (set to 1), task id and creation date.
 
-![There shuld be screen shoot from the app](/src/main/resources/Screenshoots/ToDo2.png)
+![There shuld be screen shoot from the app](/Screenshoots/ToDo2.png)
 
 Newly created object is being placed in to do window.
 
