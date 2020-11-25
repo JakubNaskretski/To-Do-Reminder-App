@@ -70,27 +70,6 @@ public class TasksDBConnector {
         return task;
     }
 
-//    public static List<com.Task> getToDoTasks() {
-//        EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
-//
-//        // the lowercase c refers to the object
-//        // :custID is a parameterized query thats value is set below
-//        String strQuery = "SELECT t FROM com.Task t WHERE t.id IS NOT NULL AND t.isTaskDone = 0";
-//
-//        TypedQuery<com.Task> tq = em.createQuery(strQuery, com.Task.class);
-//        List<com.Task> tasks = null;
-//        try {
-//            // Get matching customer object and output
-//            tasks = tq.getResultList();
-//        }
-//        catch(NoResultException ex) {
-//            ex.printStackTrace();
-//        }
-//        finally {
-//            em.close();
-//        }
-//        return tasks;
-//    }
 
 //    com.Task sort by tasId, taskName, taskImportance
 //    com.Task type type 0 - to do, 1 - done, 2 - all
