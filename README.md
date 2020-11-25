@@ -23,12 +23,12 @@ After creating new task, instance is created in database which defaultly has imp
 
 Newly created object is being placed in to do window.
 
-![There shuld be screen shoot from the app](src/main/resources/Screenshoots/ToDo3.png)
+![There shuld be screen shoot from the app](/src/main/resources/Screenshoots/ToDo3.png)
 
 After selecting task, program allows you to edit its name, importance, reminder date and note.
 To activate feature you just need to click on field tht is interesting for you.
 
-![There shuld be screen shoot from the app](src/main/resources/Screenshoots/ToDo4.png)
+![There shuld be screen shoot from the app](/src/main/resources/Screenshoots/ToDo4.png)
 
 Each field saves itself automaticly and makes database transaction after changing mouse focus.
 Task note area is being saved every 15 seconds while in focuse.
