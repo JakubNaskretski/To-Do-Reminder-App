@@ -25,12 +25,8 @@ Newly created object is being placed in the todo window.
 
 ![There should be screen shoot from the app](/Design/Screenshoots/ToDo3.png)
 
-![There should be screen shoot from the app](/Design/Screenshoots/ToDo3.png)
-
 After selecting task, program allows you to edit its name, importance, reminder date and note.
 To activate feature you just need to click on field tht is interesting for you.
-
-![There should be screen shoot from the app](/Design/Screenshoots/ToDo4.png)
 
 ![There should be screen shoot from the app](/Design/Screenshoots/ToDo4.png)
 
